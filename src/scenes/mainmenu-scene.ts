@@ -1,7 +1,13 @@
 import {TextButton} from "../objects/buttons/text.button";
+import {Upgrade} from "../objects/upgrade";
 
 export class MainMenuScene extends Phaser.Scene {
   startButton: TextButton;
+  buttonPresses: number = 0;
+  common: number = 0;
+  uncommon: number = 0;
+  rare: number = 0;
+  mythic: number = 0;
 
   constructor() {
     super({key: 'MainMenuScene'});
@@ -37,10 +43,10 @@ export class MainMenuScene extends Phaser.Scene {
 
   public update() {
     this.startButton.update();
+    //this.startGame();
   }
       
   public startGame() {
-    console.log('starting game from menu scene');
     this.scene.start('MainScene');
   }
 }
