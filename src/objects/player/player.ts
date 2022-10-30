@@ -76,7 +76,6 @@ export class Player extends Phaser.GameObjects.Container {
 
   private shoot(): void {
     let r = this.gun.rotation + Math.PI / 2;
-    console.log('shooting');
     let offset = 0.7;
     this.bullets.push(
       new Bullet({

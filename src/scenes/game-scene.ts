@@ -88,7 +88,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   resumeScene(fromScene: Phaser.Scene, data: Upgrade) {
-    console.log(fromScene);
     //this.player.applyUpgrade(data);
   }
 }

@@ -4,7 +4,8 @@ export class SelectUpgradeScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text( 100, 100, 'pick upgrade');
+    this.add.rectangle(80, 80, 300, 80, 0xbbbbbb, 1).setOrigin(0, 0);
+    this.add.text( 100, 100, 'right click to pick upgrade');
   }
 
   update() {
@@ -15,7 +16,7 @@ export class SelectUpgradeScene extends Phaser.Scene {
     //console.log('handling input');
     // console.log(this.input.activePointer.primaryDown);
     if (this.input.activePointer.rightButtonDown()) {
-      //this.scene.sendToBack('SelectUpgradeScene');
+      this.scene.stop('SelectUpgradeScene');
       this.scene.resume('MainScene', {upgrade: 'hi'});
     }
   }
