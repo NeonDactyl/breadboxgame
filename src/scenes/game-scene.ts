@@ -67,6 +67,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.wave.isWaveOver())
     {
+      this.player.clearBullets();
       this.scene.pause();
       this.scene.launch('SelectUpgradeScene');
       this.wave = new Wave({

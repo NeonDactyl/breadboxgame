@@ -126,6 +126,13 @@ export class Player extends Phaser.GameObjects.Container {
     console.log(`We have ${this.hitPoints} hp left`)
   }
 
+  public clearBullets(): void {
+    for (let i = 0; i < this.bullets.length; i++) {
+      this.bullets[i].destroy();
+    }
+    this.bullets = [];
+  }
+
   private updateBullets(): void {
     for (let i = 0; i < this.bullets.length; i++) {
       if (this.bullets[i].active) {
