@@ -1,7 +1,6 @@
 import { Enemy } from './enemy';
 import { IWaveConstructor } from '../interfaces/wave.interface';
 import { Bullet } from './bullet';
-import { homeBase } from './homeBase';
 export class Wave {
     scene: Phaser.Scene;
     enemyCount: number;
@@ -42,26 +41,28 @@ export class Wave {
                 baseX: this.basePosition.x,
                 baseY: this.basePosition.y,
                 totalVelocity: 1.5 * (1 + Math.pow(1.01, this.waveNumber)),
-                texture: 'e01',
+                texture: this.getRandomEnemyTexture(), 
                 scene: this.scene,
                 hitPoints: 120 * Math.pow(1.05, this.waveNumber)
             }
         ))
     }
 
+  private getRandomEnemyTexture(): string {
+    let textures = ['e01', 'e02', 'e03', 'e04'];
+    return textures[Math.floor(Math.random() * textures.length)];
+  }
+
     private generateEnemyPosition() : Phaser.Geom.Point {
         let safeZoneRadius = Math.min(this.scene.sys.canvas.width, this.scene.sys.canvas.height) * 0.75;
-
         let enemyX = Math.random() * this.scene.sys.canvas.width;
-
         let yOffset = Math.sqrt(Math.abs(safeZoneRadius * safeZoneRadius - Math.pow(this.basePosition.x - enemyX, 2)))
-
         let enemyY = (Math.random() * (this.scene.sys.canvas.height - yOffset));
 
         return new Phaser.Geom.Point(enemyX, enemyY);
     }
 
-    update(bullets: Bullet[], base: homeBase): void {
+    update(bullets: Bullet[]): void {
         for (let i = 0; i < this.enemies.length; i++) {
             this.enemies[i].update();
             for (let j = 0; j < bullets.length; j++) {

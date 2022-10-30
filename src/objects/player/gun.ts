@@ -1,5 +1,5 @@
-import { IImageConstructor } from '../interfaces/image.interface';
-import { Bullet } from './bullet';
+import { IImageConstructor } from '../../interfaces/image.interface';
+import { Bullet } from '../bullet';
 
 export class Gun extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
@@ -12,7 +12,7 @@ export class Gun extends Phaser.GameObjects.Sprite {
     private damage: number;
 
     constructor(aParams: IImageConstructor) {
-        super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
+        super(aParams.scene, aParams.x, aParams.y, "gun", aParams.frame);
 
         this.bullets = [];
         this.pointer = this.scene.input.activePointer;
@@ -48,9 +48,8 @@ export class Gun extends Phaser.GameObjects.Sprite {
 
     private handleInput(): void {
       this.cooldownRemaining = Math.max(0, this.cooldownRemaining - 1);
-      
-      let deltaX = this.scene.input.x - this.x;
-      let deltaY = this.scene.input.y - this.y;
+      let deltaX = this.scene.input.x - this.parentContainer.x;
+      let deltaY = this.scene.input.y - this.parentContainer.y;
       let angle = Math.atan2(deltaY, deltaX) + (Math.PI / 2);
       if (angle >= Gun.maxRotation) {
         angle = (deltaX < 0 ? Gun.minRotation : Gun.maxRotation);
@@ -77,14 +76,15 @@ export class Gun extends Phaser.GameObjects.Sprite {
 
   private shoot(): void {
     let r = this.rotation + Math.PI / 2;
+    console.log('shooting');
     let offset = 0.7;
     this.bullets.push(
       new Bullet({
         scene: this.scene,
         rotation: this.rotation,
         options: {
-          x: this.x + (this.width * Math.sin(r) * offset),
-          y: this.y - (this.width * Math.cos(r) * offset)
+          x: this.parentContainer.x + (this.width * Math.sin(r) * offset),
+          y: this.parentContainer.y - (this.width * Math.cos(r) * offset)
         },
         size: 10,
         damage: this.damage,

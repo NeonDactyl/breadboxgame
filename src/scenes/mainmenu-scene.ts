@@ -1,13 +1,9 @@
 import {TextButton} from "../objects/buttons/text.button";
-import {Upgrade} from "../objects/upgrade";
+import {Player} from "../objects/player/player";
 
 export class MainMenuScene extends Phaser.Scene {
   startButton: TextButton;
   buttonPresses: number = 0;
-  common: number = 0;
-  uncommon: number = 0;
-  rare: number = 0;
-  mythic: number = 0;
 
   constructor() {
     super({key: 'MainMenuScene'});
@@ -17,6 +13,8 @@ export class MainMenuScene extends Phaser.Scene {
   preload(): void {
     this.load.image('button_text', '../public/ui/button.png');
     this.load.image('button_text_down', '../public/ui/button_down.png');
+    this.load.image('homebase', '../public/Dome1.png');
+    this.load.image('gun', '../public/lasergun.png');
   }
 
   create(): void {

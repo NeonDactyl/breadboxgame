@@ -9,7 +9,7 @@ export class homeBase extends Phaser.GameObjects.Sprite {
     private maxHitPoints: number;
 
     constructor(aParams: IImageConstructor) {
-        super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
+        super(aParams.scene, aParams.x, aParams.y, 'homebase', aParams.frame);
 
         this.hitPoints = 30;
         this.maxHitPoints = 300;
