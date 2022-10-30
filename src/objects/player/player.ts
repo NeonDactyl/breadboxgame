@@ -1,5 +1,6 @@
 import {IPlayerOptions} from "../../interfaces/player.interface";
 import {Bullet} from "../bullet";
+import {Enemy} from "../enemy";
 import {Upgrade} from "../upgrades/Upgrade";
 import {Wave} from "../wave";
 import {Gun} from "./gun";
@@ -8,9 +9,14 @@ import {homeBase} from "./homeBase";
 export class Player extends Phaser.GameObjects.Container {
   private dome: homeBase;
   private gun: Gun;
+  private hitPoints: number;
+  private maxHitPoints: number;
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
+
+    this.hitPoints = 30;
+    this.maxHitPoints = 300;
 
     this.gun = new Gun ({
       scene: this.scene,
@@ -27,9 +33,6 @@ export class Player extends Phaser.GameObjects.Container {
     this.add([this.gun, this.dome]);
     this.width = this.dome.width;
     this.height = this.gun.width;
-    //this.dome.setOrigin(0.5, 1);
-    //this.gun.setOrigin(-0.70, 0.5);
-
   }
 
   applyUpgrade(upgrade: Upgrade): void {
@@ -38,15 +41,22 @@ export class Player extends Phaser.GameObjects.Container {
 
   update(wave: Wave): void {
     this.gun.update();
-    this.dome.update(wave);
+    for (let i = 0; i < wave.enemies.length; i++) {
+      if (this.scene.physics.collide(this.dome, wave.enemies[i]))
+      {
+        this.takeDamage(wave.enemies[i])
+        wave.enemies[i].destroy();
+        wave.enemies.splice(i, 1);
+      }
+    }
   }
 
   getBullets(): Bullet[] {
     return this.gun.getBullets();
   }
 
-  isDead(): boolean {
-    return this.dome.isDead();
+  public isDead(): boolean {
+      return this.hitPoints <= 0;
   }
 
   levelUp(): void {
@@ -54,6 +64,11 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   getHpString(): string {
-    return `${this.dome.getCurrentHp()} / ${this.dome.getMaxHp()}`;
+    return `${this.hitPoints} / ${this.maxHitPoints}`;
+  }
+
+  public takeDamage(enemy: Enemy): void{
+    this.hitPoints -= enemy.getAttack();
+    console.log(`We have ${this.hitPoints} hp left`)
   }
 }
