@@ -7,6 +7,7 @@ export class Wave {
     enemies: Enemy[];
     waveNumber: number;
     basePosition: Phaser.Geom.Point;
+    damageDealt: number;
 
     constructor(aParams: IWaveConstructor) {
         this.scene = aParams.scene;
@@ -14,6 +15,7 @@ export class Wave {
         this.enemies = [];
         this.basePosition = aParams.basePosition;
         this.waveNumber = aParams.waveNumber;
+        this.damageDealt = 0;
         this.initWave();
     }
 
@@ -63,6 +65,7 @@ export class Wave {
     }
 
     update(bullets: Bullet[]): void {
+        this.damageDealt = 0;
         for (let i = 0; i < this.enemies.length; i++) {
             this.enemies[i].update();
             for (let j = 0; j < bullets.length; j++) {
@@ -71,6 +74,7 @@ export class Wave {
                 if (this.enemies[i].active && this.scene.physics.collide(e, b))
                 {
                     this.enemies[i].takeDamageFromBullet(bullets[j]);
+                    this.damageDealt += bullets[j].damage;
                     bullets[j].destroy();
                     bullets.splice(j, 1);
                     if (this.enemies[i].isDead()) {

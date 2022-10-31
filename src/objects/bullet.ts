@@ -1,6 +1,6 @@
 import { IBulletConstructor } from '../interfaces/bullet.interface';
 export class Bullet extends Phaser.GameObjects.Graphics {
-    body : Phaser.Physics.Arcade.Body;
+    declare body : Phaser.Physics.Arcade.Body;
 
     private selectedColor: number;
     private velocity: Phaser.Math.Vector2;
@@ -19,8 +19,8 @@ export class Bullet extends Phaser.GameObjects.Graphics {
 
         this.damage = aParams.damage;
 
-        this.x = aParams.options.x;
-        this.y = aParams.options.y;
+        this.x = aParams.options.x ?? 0;
+        this.y = aParams.options.y ?? 0;
         this.velocity = new Phaser.Math.Vector2(
             -aParams.speed * Math.cos(aParams.rotation + Math.PI ),
             -aParams.speed * Math.sin(aParams.rotation + Math.PI )
