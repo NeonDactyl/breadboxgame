@@ -44,7 +44,7 @@ export class GameScene extends Phaser.Scene {
       color: '#fff'
     })
     this.scoreBoard = new ScoreBoard({
-      scene: this, x: 1000, y: 10
+      scene: this, x: 10, y: 40
     })
     
     this.wave = new Wave({
@@ -73,7 +73,22 @@ export class GameScene extends Phaser.Scene {
 
     if (playerDead) {
       this.scene.pause();
-      this.scene.launch('GameOverScene', this.scoreBoard);
+      this.player.lives -= 1;
+      if(this.player.lives > 0){
+        this.scene.launch('LostLifeScene', this.player);
+        this.player.clearBullets();
+        this.player.resetHitPoints();
+        this.wave.clearEnemies();
+        this.wave = new Wave({
+          scene: this,
+          enemyCount: this.enemyCount,
+          waveNumber: this.waveCount,
+          basePosition: new Phaser.Geom.Point(this.game.canvas.width / 2, this.game.canvas.height - 30)});
+      }
+      else{
+        this.scene.launch('GameOverScene', this.scoreBoard);
+      }
+      
     }
 
     if (waveOver)

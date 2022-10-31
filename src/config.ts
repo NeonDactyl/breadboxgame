@@ -3,6 +3,8 @@ import { GameScene } from './scenes/game-scene';
 import { GameOverScene } from './scenes/gameover-scene';
 import { MainMenuScene } from './scenes/mainmenu-scene';
 import {SelectUpgradeScene} from './scenes/select-upgrade-scene';
+import {LostLifeScene} from './scenes/lostlife-scene';
+
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Webpack-Boilerplate',
@@ -23,7 +25,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
       gravity: { y: 200 }
     }
   },
-  scene: [MainMenuScene, GameScene, GameOverScene, SelectUpgradeScene],
+  scene: [MainMenuScene, GameScene, GameOverScene, SelectUpgradeScene, LostLifeScene],
   input: {
     keyboard: false,
     mouse: true,
