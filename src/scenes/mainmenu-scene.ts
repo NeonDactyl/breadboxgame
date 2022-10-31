@@ -15,10 +15,12 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('button_text_down', '../ui/button_down.png');
     this.load.image('homebase', '../Dome1.png');
     this.load.image('gun', '../lasergun.png');
+    this.load.image('title', '../title.png');
   }
 
   create(): void {
-    let startButtonText = "Start Game";
+    let startButtonText = "BEGIN";
+    let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
     // this.text = this.add.text(10, 10, '', { fill: '#00ff00' }).setDepth(1);
     this.startButton = new TextButton({
       text: startButtonText,
