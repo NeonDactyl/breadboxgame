@@ -18,6 +18,7 @@ export class Score extends Phaser.GameObjects.Text {
     return this.scoreString;
   }
   setScore(score: number){
+    score = Math.round(score)
     this.score = score;
     this.setScoreString(score);
     this.text = this.scoreString;

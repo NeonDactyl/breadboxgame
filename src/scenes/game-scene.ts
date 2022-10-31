@@ -73,14 +73,11 @@ export class GameScene extends Phaser.Scene {
 
     if (playerDead) {
       this.scene.pause();
-      this.scene.launch('GameOverScene');
-      this.scoreBoard.update(true);
-      this.scoreBoard.reset();
+      this.scene.launch('GameOverScene', this.scoreBoard);
     }
 
     if (waveOver)
     {
-      console.log(this.scoreBoard.level.level)
       this.player.clearBullets();
       this.scene.pause();
       this.scene.launch('SelectUpgradeScene');
@@ -90,9 +87,8 @@ export class GameScene extends Phaser.Scene {
         waveNumber: ++this.waveCount,
         basePosition: new Phaser.Geom.Point(this.game.canvas.width / 2, this.game.canvas.height - 30)});
       this.player.levelUp();
-      if(!playerDead){
-        this.scoreBoard.nextLevel();
-      }
+      this.scoreBoard.nextLevel();
+      
 
     }
     
