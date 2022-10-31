@@ -1,9 +1,11 @@
 import { Wave } from '../objects/wave';
 import {Player} from '../objects/player/player';
 import {Upgrade} from '../objects/upgrades/Upgrade';
+import { ScoreBoard } from '../objects/scoreBoard/scoreboard';
 
 export class GameScene extends Phaser.Scene {
   private player: Player;
+  private scoreBoard: ScoreBoard;
   private background: Phaser.GameObjects.Image;
   private waveCount: number;
   private wave: Wave;
@@ -41,7 +43,9 @@ export class GameScene extends Phaser.Scene {
       fontSize: '3em',
       color: '#fff'
     })
-    
+    this.scoreBoard = new ScoreBoard({
+      scene: this, x: 1000, y: 10
+    })
     
     this.wave = new Wave({
       scene: this,
@@ -50,23 +54,33 @@ export class GameScene extends Phaser.Scene {
       basePosition: new Phaser.Geom.Point(this.game.canvas.width / 2, this.game.canvas.height - 30)
     });
 
+
     this.add.existing(this.hpText);
     this.add.existing(this.player);
+    this.add.existing(this.scoreBoard);
+
     this.events.on('resume', this.resumeScene);
   }
   
   update(): void {
     this.player.update(this.wave);
     this.wave.update(this.player.getBullets());
+    this.scoreBoard.score.addScore(this.wave.damageDealt/10);
     this.setHpText()
 
-    if (this.player.isDead()) {
+    let playerDead: boolean = this.player.isDead();
+    let waveOver: boolean = this.wave.isWaveOver();
+
+    if (playerDead) {
       this.scene.pause();
       this.scene.launch('GameOverScene');
+      this.scoreBoard.update(true);
+      this.scoreBoard.reset();
     }
 
-    if (this.wave.isWaveOver())
+    if (waveOver)
     {
+      console.log(this.scoreBoard.level.level)
       this.player.clearBullets();
       this.scene.pause();
       this.scene.launch('SelectUpgradeScene');
@@ -75,9 +89,13 @@ export class GameScene extends Phaser.Scene {
         enemyCount: ++this.enemyCount,
         waveNumber: ++this.waveCount,
         basePosition: new Phaser.Geom.Point(this.game.canvas.width / 2, this.game.canvas.height - 30)});
-
       this.player.levelUp();
+      if(!playerDead){
+        this.scoreBoard.nextLevel();
+      }
+
     }
+    
   }
 
   private setHpText(): void {
