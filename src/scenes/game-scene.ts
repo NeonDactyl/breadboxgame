@@ -19,14 +19,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('bgImage', '../public/parallax-mountain-bg_all.png');
-    this.load.image('homebase', '../public/Dome1.png');
-    this.load.image('gun', '../public/lasergun.png');
-    this.load.image('background', '../public/parallax-mountain-bg_all.png');
-    this.load.image('e01', '../public/enemy-sprites/e01.png');
-    this.load.image('e02', '../public/enemy-sprites/e02.png');
-    this.load.image('e03', '../public/enemy-sprites/e03.png');
-    this.load.image('e04', '../public/enemy-sprites/e04.png');
+    this.load.image('bgImage', '../parallax-mountain-bg_all.png');
+    this.load.image('homebase', '../Dome1.png');
+    this.load.image('gun', '../lasergun.png');
+    this.load.image('background', '../parallax-mountain-bg_all.png');
+    this.load.image('e01', '../enemy-sprites/e01.png');
+    this.load.image('e02', '../enemy-sprites/e02.png');
+    this.load.image('e03', '../enemy-sprites/e03.png');
+    this.load.image('e04', '../enemy-sprites/e04.png');
   }
 
   create(): void {

@@ -11,10 +11,10 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('button_text', '../public/ui/button.png');
-    this.load.image('button_text_down', '../public/ui/button_down.png');
-    this.load.image('homebase', '../public/Dome1.png');
-    this.load.image('gun', '../public/lasergun.png');
+    this.load.image('button_text', '../ui/button.png');
+    this.load.image('button_text_down', '../ui/button_down.png');
+    this.load.image('homebase', '../Dome1.png');
+    this.load.image('gun', '../lasergun.png');
   }
 
   create(): void {
