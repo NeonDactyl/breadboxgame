@@ -1,8 +1,8 @@
-import { IEnemyConstructor } from "src/interfaces/enemy.interface";
+import { IEnemyConstructor } from "../interfaces/enemy.interface";
 import { Bullet } from "./bullet";
 
 export class Enemy extends Phaser.GameObjects.Sprite {
-    body: Phaser.Physics.Arcade.Body;
+    declare body: Phaser.Physics.Arcade.Body;
 
     private velocity: Phaser.Math.Vector2;
     private hp: number;

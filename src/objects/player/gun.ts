@@ -1,8 +1,7 @@
 import { IImageConstructor } from '../../interfaces/image.interface';
-import { Bullet } from '../bullet';
 
 export class Gun extends Phaser.GameObjects.Sprite {
-  body: Phaser.Physics.Arcade.Body;
+  declare body: Phaser.Physics.Arcade.Body;
 
   constructor(aParams: IImageConstructor) {
       super(aParams.scene, aParams.x, aParams.y, "gun", aParams.frame);
