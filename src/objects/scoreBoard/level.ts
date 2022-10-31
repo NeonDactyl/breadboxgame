@@ -29,7 +29,6 @@ export class Level extends Phaser.GameObjects.Text {
   }
   resetLevel(){
     this.setLevel(0);
-    this.setLevelString(0);
   }
 
   

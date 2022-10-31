@@ -31,7 +31,6 @@ export class Score extends Phaser.GameObjects.Text {
   }
   resetScore(){
     this.setScore(0);
-    this.setScoreString(0);
   }
 
   
