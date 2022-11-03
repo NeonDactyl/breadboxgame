@@ -20,7 +20,7 @@ export class MainMenuScene extends Phaser.Scene {
 
   create(): void {
     let startButtonText = "BEGIN";
-    let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
+    // let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
     // this.text = this.add.text(10, 10, '', { fill: '#00ff00' }).setDepth(1);
     this.startButton = new TextButton({
       text: startButtonText,

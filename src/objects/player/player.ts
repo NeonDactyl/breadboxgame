@@ -22,7 +22,7 @@ export class Player extends Phaser.GameObjects.Container {
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
 
-    this.hitPoints = 30;
+    this.hitPoints = 300;
     this.maxHitPoints = 300;
     this.bullets = [];
     this.cooldownRemaining = 0;

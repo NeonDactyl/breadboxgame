@@ -1,3 +1,4 @@
+import {IHudUpdate} from "../../interfaces/IHudUpdate";
 import {IScoreBoardOptions} from "../../interfaces/scoreboard.interface";
 import { Level } from "./level";
 import { Score } from "./score";
@@ -5,32 +6,53 @@ import { Score } from "./score";
 
 
 export class ScoreBoard extends Phaser.GameObjects.Container {
-  public level: Level;
-  public score: Score;
+  private level: Level;
+  private score: Score;
+  private hpText: Phaser.GameObjects.Text;
   
   constructor(aParams: IScoreBoardOptions) {
     super(aParams.scene, aParams.x, aParams.y);
+    this.hpText = new Phaser.GameObjects.Text(this.scene, 0, 0, '', {
+      fontSize: '3em',
+      color: '#fff'
+    })
     this.score = new Score({
       scene: this.scene,
       x: 0,
-      y: 0
+      y: 30
     }) 
     this.level = new Level({
       scene: this.scene,
       x: 0,
-      y: 30
+      y: 60
     })   
     
-    this.add([this.level, this.score])
+    this.add([this.hpText, this.level, this.score])
   }
 
   reset(): void{
     this.level.resetLevel();
     this.score.resetScore();
   }
+  addScore(score: number) {
+    this.score.addScore(score);
+  }
   nextLevel(): void {
     this.level.addLevel();
     this.score.addScore(100 * this.level.getLevel());
+  }
+  getScore(): number {
+    return this.score.score;
+  }
+  getLevel(): number {
+    return this.level.getLevel();
+  }
+
+  update(updateParams: IHudUpdate) : void {
+
+    this.hpText.text = updateParams.hpText;
+    console.log(updateParams.hpText);
+    this.addScore(updateParams.damageDealt);
   }
 
   

@@ -39,12 +39,8 @@ export class GameScene extends Phaser.Scene {
     this.player = new Player ({
       scene: this, x: this.game.canvas.width / 2, y: this.game.canvas.height - 30
     });
-    this.hpText = new Phaser.GameObjects.Text(this, 10, 10, this.getHpText(), {
-      fontSize: '3em',
-      color: '#fff'
-    })
     this.scoreBoard = new ScoreBoard({
-      scene: this, x: 1000, y: 10
+      scene: this, x: 10, y: 10
     })
     
     this.wave = new Wave({
@@ -55,7 +51,6 @@ export class GameScene extends Phaser.Scene {
     });
 
 
-    this.add.existing(this.hpText);
     this.add.existing(this.player);
     this.add.existing(this.scoreBoard);
 
@@ -65,8 +60,10 @@ export class GameScene extends Phaser.Scene {
   update(): void {
     this.player.update(this.wave);
     this.wave.update(this.player.getBullets());
-    this.scoreBoard.score.addScore(this.wave.damageDealt/10);
-    this.setHpText()
+    this.scoreBoard.update({
+      hpText: this.getHpText(), 
+      damageDealt: this.wave.damageDealt/10
+    });
 
     let playerDead: boolean = this.player.isDead();
     let waveOver: boolean = this.wave.isWaveOver();
@@ -92,10 +89,6 @@ export class GameScene extends Phaser.Scene {
 
     }
     
-  }
-
-  private setHpText(): void {
-    this.hpText.text = this.getHpText();
   }
 
   private getHpText(): string {

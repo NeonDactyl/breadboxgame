@@ -4,8 +4,9 @@ export class SelectUpgradeScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.rectangle(80, 80, 300, 80, 0xbbbbbb, 1).setOrigin(0, 0);
+    this.add.rectangle(80, 80, this.sys.canvas.width - 160, this.sys.canvas.height - 160, 0xbbbbbb, 1).setOrigin(0, 0);
     this.add.text( 100, 100, 'right click to pick upgrade');
+    this.add.text( 100, 200, 'upgrades are a work in progress, none are made yet');
   }
 
   update() {
