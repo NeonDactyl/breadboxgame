@@ -1,16 +1,16 @@
 import {IHudUpdate} from "../../interfaces/IHudUpdate";
-import {IScoreBoardOptions} from "../../interfaces/scoreboard.interface";
+import { IHudOptions } from "../../interfaces/hud.interface";
 import { Level } from "./level";
 import { Score } from "./score";
 
 
 
-export class ScoreBoard extends Phaser.GameObjects.Container {
+export class Hud  extends Phaser.GameObjects.Container {
   private level: Level;
   private score: Score;
   private hpText: Phaser.GameObjects.Text;
   
-  constructor(aParams: IScoreBoardOptions) {
+  constructor(aParams: IHudOptions) {
     super(aParams.scene, aParams.x, aParams.y);
     this.hpText = new Phaser.GameObjects.Text(this.scene, 0, 0, '', {
       fontSize: '3em',
