@@ -36,7 +36,7 @@ export class Player extends Phaser.GameObjects.Container {
 
     this.criticalChance = 0.05;
     this.criticalMultiplier = 1.5;
-    this.projectileSpeed = 5;
+    this.projectileSpeed = 10;
     this.projectileSize = 10;
 
     this.gun = new Gun ({

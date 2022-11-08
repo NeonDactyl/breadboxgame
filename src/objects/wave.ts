@@ -19,7 +19,7 @@ export class Wave {
     this.basePosition = aParams.basePosition;
     this.waveNumber = aParams.waveNumber;
     this.damageDealt = 0;
-    this.enemySpeed = 0.01 * (1 + Math.pow(1.01, this.waveNumber));
+    this.enemySpeed = 0.7 * (1 + Math.pow(1.01, this.waveNumber));
     this.enemyHp = 120 * Math.pow(1.05, this.waveNumber);
     this.enemyDamage = 30 * Math.pow(1.02, this.waveNumber);
     this.initWave();
