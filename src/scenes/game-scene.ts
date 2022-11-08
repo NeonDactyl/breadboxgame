@@ -70,7 +70,7 @@ export class GameScene extends Phaser.Scene {
 
     if (playerDead) {
       this.scene.pause();
-      this.scene.launch('GameOverScene', this.scoreBoard);
+      this.scene.launch('GameOverScene', this.hud);
     }
 
     if (waveOver)

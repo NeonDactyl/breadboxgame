@@ -22,7 +22,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.body.allowDrag = false;
 
         this.hp = aParams.hitPoints;
-        this.attack = 30;
+        this.attack = aParams.damage;
 
         this.scale = 2;
 

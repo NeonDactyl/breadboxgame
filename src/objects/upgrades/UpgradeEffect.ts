@@ -10,7 +10,9 @@ export class UpgradeEffect {
     "Armor",
     "CriticalChance",
     "CriticalDamage",
-    "FireRate"
+    "FireRate",
+    "ProjectileSpeed",
+    "ProjectileSize"
   ];
   public static EnemyEffects: string[] = [
     "Speed",

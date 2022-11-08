@@ -11,6 +11,10 @@ export class Player extends Phaser.GameObjects.Container {
   private gun: Gun;
   private hitPoints: number;
   private maxHitPoints: number;
+  private criticalMultiplier: number;
+  private criticalChance: number;
+  private projectileSpeed: number;
+  private projectileSize: number;
   public static maxRotation: number = Math.PI / 2;
   public static minRotation: number = Player.maxRotation * -1;
   private bullets: Bullet[];
@@ -30,6 +34,10 @@ export class Player extends Phaser.GameObjects.Container {
     this.cooldown = 15;
     this.damage = 100;
 
+    this.criticalChance = 0.05;
+    this.criticalMultiplier = 1.5;
+    this.projectileSpeed = 5;
+    this.projectileSize = 10;
 
     this.gun = new Gun ({
       scene: this.scene,
@@ -75,6 +83,7 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   private shoot(): void {
+    let isCritical: boolean = Math.random() <= this.criticalChance;
     let r = this.gun.rotation + Math.PI / 2;
     let offset = 0.7;
     this.bullets.push(
@@ -85,9 +94,10 @@ export class Player extends Phaser.GameObjects.Container {
           x: this.x + (this.gun.width * Math.sin(r) * offset),
           y: this.y - (this.gun.width * Math.cos(r) * offset)
         },
-        size: 10,
-        damage: this.damage,
-        speed: 15
+        size: this.projectileSize,
+        damage: this.damage * (isCritical ? this.criticalMultiplier : 1),
+        speed: this.projectileSpeed,
+        isCritical
       })
     );
     this.cooldownRemaining = this.cooldown;
@@ -123,7 +133,6 @@ export class Player extends Phaser.GameObjects.Container {
 
   public takeDamage(enemy: Enemy): void{
     this.hitPoints -= enemy.getAttack();
-    console.log(`We have ${this.hitPoints} hp left`)
   }
 
   public clearBullets(): void {
