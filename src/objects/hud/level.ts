@@ -1,10 +1,10 @@
-import {IScoreBoardOptions} from "../../interfaces/scoreboard.interface";
+import {IHudOptions} from "../../interfaces/hud.interface";
 
 export class Level extends Phaser.GameObjects.Text {
   public level: number;
   public levelString: string;
 
-  constructor(aParams: IScoreBoardOptions) {
+  constructor(aParams: IHudOptions) {
     super(aParams.scene, aParams.x, aParams.y, "Level: 1", {fontSize: '3em', color: '#fff'});
     this.level = 1;
     this.levelString = `Level: 1`

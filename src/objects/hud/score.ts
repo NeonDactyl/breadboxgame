@@ -1,11 +1,11 @@
-import {IScoreBoardOptions} from "../../interfaces/scoreboard.interface";
+import {IHudOptions} from "../../interfaces/hud.interface";
 
 export class Score extends Phaser.GameObjects.Text {
   public score: number;
   public scoreString: string;
   
   
-  constructor(aParams: IScoreBoardOptions) {
+  constructor(aParams: IHudOptions) {
     super(aParams.scene, aParams.x, aParams.y, "Score: 0", {fontSize: '3em', color: '#fff'});
     this.score = 0;
     this.scoreString = `Score: 0`
