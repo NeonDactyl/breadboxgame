@@ -29,6 +29,13 @@ export class Wave {
     return this.enemies;
   }
 
+  public clearEnemies(): void {
+    for(let i = 0; i< this.enemies.length; i++){
+        this.enemies[i].destroy();
+    }
+    this.enemies = [];
+}
+
   private initWave(): void {
     for (let i = 0; i < this.enemyCount ; i++) {
       this.spawnEnemy();

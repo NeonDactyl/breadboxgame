@@ -2,6 +2,7 @@ import {IHudUpdate} from "../../interfaces/IHudUpdate";
 import { IHudOptions } from "../../interfaces/hud.interface";
 import { Level } from "./level";
 import { Score } from "./score";
+import { Lives } from "./lives";
 
 
 
@@ -9,6 +10,7 @@ export class Hud  extends Phaser.GameObjects.Container {
   private level: Level;
   private score: Score;
   private hpText: Phaser.GameObjects.Text;
+  private lives: Lives;
   
   constructor(aParams: IHudOptions) {
     super(aParams.scene, aParams.x, aParams.y);
@@ -26,13 +28,19 @@ export class Hud  extends Phaser.GameObjects.Container {
       x: 0,
       y: 60
     })   
+    this.lives = new Lives({
+      scene: this.scene,
+      x: 0,
+      y: 90
+    })
     
-    this.add([this.hpText, this.level, this.score])
+    this.add([this.hpText, this.level, this.score, this.lives])
   }
 
   reset(): void{
     this.level.resetLevel();
     this.score.resetScore();
+    this.lives.resetLives();
   }
   addScore(score: number) {
     this.score.addScore(score);
@@ -46,6 +54,14 @@ export class Hud  extends Phaser.GameObjects.Container {
   }
   getLevel(): number {
     return this.level.getLevel();
+  }
+
+  setLives(lives: number): void {
+    this.lives.setLives(lives);
+  }
+
+  getLives(): number {
+    return this.lives.getLives();
   }
 
   update(updateParams: IHudUpdate) : void {

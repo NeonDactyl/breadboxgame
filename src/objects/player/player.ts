@@ -21,16 +21,17 @@ export class Player extends Phaser.GameObjects.Container {
   private cooldownRemaining: number;
   private cooldown: number;
   private damage: number;
+  public lives: number;
  
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
 
-    this.hitPoints = 300;
+    this.hitPoints = 10;
     this.maxHitPoints = 300;
     this.bullets = [];
     this.cooldownRemaining = 0;
-
+    this.lives = 3;
     this.cooldown = 15;
     this.damage = 100;
 
@@ -58,6 +59,10 @@ export class Player extends Phaser.GameObjects.Container {
 
   applyUpgrade(upgrade: Upgrade): void {
 
+  }
+
+  resetHitPoints(): void {
+    this.hitPoints = this.maxHitPoints;
   }
 
   update(wave: Wave): void {
