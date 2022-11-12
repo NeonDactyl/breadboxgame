@@ -1,16 +1,16 @@
-import {IPlayerOptions} from "../../interfaces/player.interface";
+import {ILivesOptions} from "../../interfaces/lives.interface";
 import { Life } from "./life";
 
 export class Lives extends Phaser.GameObjects.Container {
   public lives: Life[] = [];
   public startLives: number = 3;
   
-  constructor(aParams: IPlayerOptions) {
+  constructor(aParams: ILivesOptions) {
     super(aParams.scene, aParams.x, aParams.y);
     this.setLives();
   }
 
-  setLives(): void {
+  setLives(): void{
     for(let i = 0; i< this.startLives; i++ ){
         this.lives.push(new Life({
           scene: this.scene,
@@ -22,7 +22,7 @@ export class Lives extends Phaser.GameObjects.Container {
   }
 
     lostLife(index : number): void{
-      this.remove(this.lives[index]);
+      this.lives[index].destroy();
       this.lives.pop();
     }
 }
