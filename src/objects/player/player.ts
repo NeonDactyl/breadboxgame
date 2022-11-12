@@ -1,6 +1,7 @@
 import {IPlayerOptions} from "../../interfaces/player.interface";
 import {Bullet} from "../bullet";
 import {Enemy} from "../enemy";
+import { Lives } from "./lives";
 import {Upgrade} from "../upgrades/Upgrade";
 import {Wave} from "../wave";
 import {Gun} from "./gun";
@@ -22,12 +23,11 @@ export class Player extends Phaser.GameObjects.Container {
   private cooldown: number;
   private damage: number;
   public lives: number;
- 
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
 
-    this.hitPoints = 10;
+    this.hitPoints = 300;
     this.maxHitPoints = 300;
     this.bullets = [];
     this.cooldownRemaining = 0;
@@ -51,7 +51,7 @@ export class Player extends Phaser.GameObjects.Container {
       x: 0,
       y: 0
     });
-
+    
     this.add([this.gun, this.dome]);
     this.width = this.dome.width;
     this.height = this.gun.width;
