@@ -1,22 +1,41 @@
 export class UpgradeEffect {
-  public static ObjectAffected: string[] = [
-    'Player',
-    'Enemy'
+  public Effect: string;
+  public Target: UpgradeTarget;
+
+  constructor(effect: string, target: UpgradeTarget) {
+    if (!UpgradeEffect.Effects.includes(effect) || target == null) throw "Invalid effect parameters";
+    this.Effect = effect;
+    this.Target = target;
+  }
+  public static Effects: string[] = [
+    "PlayerHealth",
+    "PlayerRestoreHealth",
+    "PlayerDamage",
+    "PlayerCriticalChance",
+    "PlayerCriticalDamage",
+    "PlayerFireRate",
+    "PlayerProjectileSpeed",
+    "EnemySpeed",
+    "EnemyDamage",
+    "EnemyHealth"
   ];
-  public static PlayerEffects: string[] = [
-    "Health",
-    "RestoreHealth",
-    "Damage",
-    "Armor",
-    "CriticalChance",
-    "CriticalDamage",
-    "FireRate",
-    "ProjectileSpeed",
-    "ProjectileSize"
-  ];
-  public static EnemyEffects: string[] = [
-    "Speed",
-    "Damage",
-    "Health"
-  ];
+
+  public static GetRandomUpgradeEffect(): UpgradeEffect {
+    const randEffect = UpgradeEffect.Effects[Math.floor(Math.random() * UpgradeEffect.Effects.length)];
+    let upgradeTarget: UpgradeTarget;
+    if (randEffect.startsWith('Player')) {
+      upgradeTarget = UpgradeTarget.Player;
+    } else if (randEffect.startsWith('Enemy')) {
+      upgradeTarget = UpgradeTarget.Enemy;
+    } else {
+      throw "something broke";
+    }
+    return new UpgradeEffect(randEffect, upgradeTarget);
+  }
 }
+
+export enum UpgradeTarget {
+  Player,
+  Enemy
+}
+

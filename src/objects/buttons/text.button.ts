@@ -4,13 +4,13 @@ export class TextButton extends Button {
   private textObject: Phaser.GameObjects.Text;
   private bgImage: Phaser.GameObjects.Image;
   private buttonText: string;
-  private buttonOptions: Phaser.Types.GameObjects.Text.TextStyle;
+  private textOptions: Phaser.Types.GameObjects.Text.TextStyle;
   private textY: number;
 
   constructor(aParams: ITextButtonOptions) {
     super(aParams);
 
-    this.buttonOptions = {
+    this.textOptions = {
         fontFamily: aParams.textFont,
         fontSize: aParams.fontSize,
         color: aParams.textColor
@@ -24,7 +24,7 @@ export class TextButton extends Button {
     this.textObject = this.scene.add.text(0,
       0,
       this.buttonText,
-      this.buttonOptions);
+      this.textOptions);
     this.add([this.bgImage, this.textObject]);
     this.width = this.bgImage.width;
     this.height = this.bgImage.height;

@@ -1,5 +1,6 @@
 import {TextButton} from "../objects/buttons/text.button";
-import {Player} from "../objects/player/player";
+import {UpgradeButton} from "../objects/buttons/upgrade-button";
+import {Upgrade} from "../objects/upgrades/Upgrade";
 
 export class MainMenuScene extends Phaser.Scene {
   startButton: TextButton;
@@ -7,7 +8,6 @@ export class MainMenuScene extends Phaser.Scene {
 
   constructor() {
     super({key: 'MainMenuScene'});
-    // this.setOrigin(0,0);
   }
 
   preload(): void {
@@ -16,6 +16,16 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('homebase', '../Dome1.png');
     this.load.image('gun', '../lasergun.png');
     this.load.image('title', '../title.png');
+    this.load.image('PlayerHealth', '../ui/upgrades/max_health.png');
+    this.load.image('PlayerRestoreHealth', '../ui/upgrades/restore_health.png');
+    this.load.image('PlayerDamage', '../ui/upgrades/damage.png');
+    this.load.image('PlayerCriticalChance', '../ui/upgrades/critical_chance.png');
+    this.load.image('PlayerCriticalDamage', '../ui/upgrades/critical_damage.png');
+    this.load.image('PlayerFireRate', '../ui/upgrades/fire_rate.png');
+    this.load.image('PlayerProjectileSpeed', '../ui/upgrades/projectile_speed.png');
+    this.load.image('EnemySpeed', '../ui/upgrades/enemy_speed.png');
+    this.load.image('EnemyDamage', '../ui/upgrades/enemy_damage.png');
+    this.load.image('EnemyHealth', '../ui/upgrades/enemy_health.png');
   }
 
   create(): void {
@@ -27,8 +37,6 @@ export class MainMenuScene extends Phaser.Scene {
       clickCallback: this.startGame.bind(this),
       scene: this,
       options: {
-        // x: 0,
-        // y: 0
         x: this.sys.canvas.width / 2,
         y: this.sys.canvas.height / 2
       },
@@ -37,13 +45,13 @@ export class MainMenuScene extends Phaser.Scene {
       fontSize: '2em',
     });
 
+
     this.startButton.setInteractive();
     this.add.existing(this.startButton);
   }
 
   public update() {
     this.startButton.update();
-    //this.startGame();
   }
       
   public startGame() {

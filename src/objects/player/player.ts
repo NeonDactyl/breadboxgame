@@ -15,12 +15,16 @@ export class Player extends Phaser.GameObjects.Container {
   private criticalChance: number;
   private projectileSpeed: number;
   private projectileSize: number;
-  public static maxRotation: number = Math.PI / 2;
-  public static minRotation: number = Player.maxRotation * -1;
   private bullets: Bullet[];
   private cooldownRemaining: number;
   private cooldown: number;
   private damage: number;
+  private cooldownMultiplier: number;
+  private damageMultiplier: number;
+  private criticalChanceMultiplier: number;
+  private criticalDamageMultiplier: number;
+  public static maxRotation: number = Math.PI / 2;
+  public static minRotation: number = Player.maxRotation * -1;
  
   
   constructor(aParams: IPlayerOptions) {
@@ -33,6 +37,11 @@ export class Player extends Phaser.GameObjects.Container {
 
     this.cooldown = 15;
     this.damage = 100;
+
+    this.cooldownMultiplier = 1;
+    this.damageMultiplier = 1;
+    this.criticalChanceMultiplier = 1;
+    this.criticalDamageMultiplier = 1;
 
     this.criticalChance = 0.05;
     this.criticalMultiplier = 1.5;
@@ -83,7 +92,7 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   private shoot(): void {
-    let isCritical: boolean = Math.random() <= this.criticalChance;
+    let isCritical: boolean = Math.random() <= this.criticalChance * this.criticalChanceMultiplier;
     let r = this.gun.rotation + Math.PI / 2;
     let offset = 0.7;
     this.bullets.push(
@@ -95,7 +104,7 @@ export class Player extends Phaser.GameObjects.Container {
           y: this.y - (this.gun.width * Math.cos(r) * offset)
         },
         size: this.projectileSize,
-        damage: this.damage * (isCritical ? this.criticalMultiplier : 1),
+        damage: this.damage * (isCritical ? this.criticalMultiplier * this.criticalDamageMultiplier : this.damageMultiplier),
         speed: this.projectileSpeed,
         isCritical
       })

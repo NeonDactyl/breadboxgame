@@ -4,13 +4,13 @@ export class UpgradeLevel {
   public rarityValue: number = 0;
 
   public static Common: UpgradeLevel = {
-    tintColor: 0xbbbbbb,
+    tintColor: 0x888888,
     rarityName: "Common",
     rarityValue: 0.65
   }
 
   public static Uncommon: UpgradeLevel = {
-    tintColor: 0x0000dd,
+    tintColor: 0x0000aa,
     rarityName: "Uncommon",
     rarityValue: 0.25
   }
@@ -22,7 +22,7 @@ export class UpgradeLevel {
   }
 
   public static Mythic: UpgradeLevel = {
-    tintColor: 0xbbbb00,
+    tintColor: 0xbe9800,
     rarityName: "Mythic",
     rarityValue: 0.01
   }
