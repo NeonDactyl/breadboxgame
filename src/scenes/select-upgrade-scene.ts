@@ -3,14 +3,15 @@ import {Upgrade} from "../objects/upgrades/Upgrade";
 
 export class SelectUpgradeScene extends Phaser.Scene {
   upgradeButtons: UpgradeButton[];
+  private canSelect = false;
   constructor() {
     super({ key: 'SelectUpgradeScene' });
   }
 
   create() {
+    this.canSelect = !this.input.activePointer.primaryDown;
     this.add.rectangle(80, 80, this.sys.canvas.width - 160, this.sys.canvas.height - 160, 0xbbbbbb, 1).setOrigin(0, 0);
-    this.add.text( 100, 100, 'right click to pick upgrade');
-    this.add.text( 100, 200, 'upgrades are a work in progress, none are made yet');
+    this.add.text( 100, 100, 'pick your upgrade');
 
     this.upgradeButtons = [];
     for (let i = 0; i < 5; i++) {
@@ -19,28 +20,39 @@ export class SelectUpgradeScene extends Phaser.Scene {
         width: 0,
         height: 0,
         scene: this,
-        clickCallback: () => {},
+        clickCallback: () => {this.selectUpgrade(upgrade)},
         options: {
           x: this.sys.canvas.width / 2 - 400 + i * 200,
           y: this.sys.canvas.height / 2
         }
       }));
-      this.upgradeButtons[i].setInteractive();
+      if (this.canSelect) {
+        this.upgradeButtons[i].setInteractive();
+      }
+      this.upgradeButtons[i].setDepth(3);
       this.add.existing(this.upgradeButtons[i]);
+    }
+    this.input.on('pointerup', this.primaryReleased.bind(this));
+  }
 
+  primaryReleased(pointer: Phaser.Input.Pointer) {
+    this.canSelect = pointer.leftButtonReleased();
+    for (let i = 0; i < this.upgradeButtons.length; i++)
+    {
+      this.upgradeButtons[i].setInteractive();
     }
   }
 
   update() {
-    this.handleInput();
+    if (!this.canSelect) return;
+    for (let i = 0; i < this.upgradeButtons.length; i++) {
+      this.upgradeButtons[i].update();
+    }
   }
 
-  handleInput() {
-    //console.log('handling input');
-    // console.log(this.input.activePointer.primaryDown);
-    if (this.input.activePointer.rightButtonDown()) {
-      this.scene.stop('SelectUpgradeScene');
-      this.scene.resume('MainScene', {upgrade: 'hi'});
-    }
+  selectUpgrade(upgrade: Upgrade) {
+    if (!this.canSelect) return;
+    this.scene.stop('SelectUpgradeScene');
+    this.scene.resume('MainScene', upgrade);
   }
 }

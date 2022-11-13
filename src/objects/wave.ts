@@ -1,6 +1,7 @@
 import { Enemy } from './enemy';
 import { IWaveConstructor } from '../interfaces/wave.interface';
 import { Bullet } from './bullet';
+import {Upgrade} from './upgrades/Upgrade';
 export class Wave {
   scene: Phaser.Scene;
   enemyCount: number;
@@ -11,17 +12,26 @@ export class Wave {
   enemyHp: number;
   enemySpeed: number;
   enemyDamage: number;
+  enemySpeedUpgrades: number;
+  enemyHealthUpgrades: number;
+  enemyDamageUpgrades: number;
 
   constructor(aParams: IWaveConstructor) {
     this.scene = aParams.scene;
     this.enemyCount = aParams.enemyCount;
+    this.enemySpeedUpgrades = 1;
+    this.enemyHealthUpgrades = 1;
+    this.enemyDamageUpgrades = 1;
+    for (let i = 0; i < aParams.upgrades.length; i++) {
+      this.applyUpgrade(aParams.upgrades[i]);
+    }
     this.enemies = [];
     this.basePosition = aParams.basePosition;
     this.waveNumber = aParams.waveNumber;
     this.damageDealt = 0;
-    this.enemySpeed = 0.7 * (1 + Math.pow(1.01, this.waveNumber));
-    this.enemyHp = 120 * Math.pow(1.05, this.waveNumber);
-    this.enemyDamage = 30 * Math.pow(1.02, this.waveNumber);
+    this.enemySpeed = 0.7 * (1 + Math.pow(1.01, this.waveNumber)) * this.enemySpeedUpgrades;
+    this.enemyHp = 120 * Math.pow(1.05, this.waveNumber) * this.enemyHealthUpgrades;
+    this.enemyDamage = 30 * Math.pow(1.02, this.waveNumber) * this.enemyDamageUpgrades;
     this.initWave();
   }
 
@@ -33,11 +43,28 @@ export class Wave {
     for (let i = 0; i < this.enemyCount ; i++) {
       this.spawnEnemy();
       this.enemies[this.enemies.length - 1 ].setTint(this.generateColor());
+      this.enemies[this.enemies.length - 1].setDepth(2);
     }
   }
 
   public isWaveOver(): boolean {
     return this.enemies.length === 0;
+  }
+
+  public applyUpgrade(upgrade: Upgrade) {
+    switch (upgrade.upgradeEffect.Effect) {
+      case "EnemySpeed":
+        this.enemySpeedUpgrades *= upgrade.modifierValue;
+        break;
+      case "EnemyDamage":
+        this.enemyDamageUpgrades *= upgrade.modifierValue;
+        break;
+      case "EnemyHealth":
+        this.enemyHealthUpgrades *= upgrade.modifierValue;
+        break;
+      default:
+        break;
+    }
   }
 
   private spawnEnemy(): void {
@@ -56,10 +83,10 @@ export class Wave {
     this.enemies.push(new Enemy(enemyOptions));
   }
 
-private getRandomEnemyTexture(): string {
-  let textures = ['e01', 'e02', 'e03', 'e04'];
-  return textures[Math.floor(Math.random() * textures.length)];
-}
+  private getRandomEnemyTexture(): string {
+    let textures = ['e01', 'e02', 'e03', 'e04'];
+    return textures[Math.floor(Math.random() * textures.length)];
+  }
 
   private generateEnemyPosition() : Phaser.Geom.Point {
       let safeZoneRadius = Math.min(this.scene.sys.canvas.width, this.scene.sys.canvas.height) * 0.75;

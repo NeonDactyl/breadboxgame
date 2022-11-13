@@ -57,4 +57,5 @@ export class MainMenuScene extends Phaser.Scene {
   public startGame() {
     this.scene.start('MainScene');
   }
+
 }

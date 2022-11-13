@@ -21,11 +21,21 @@ export class Player extends Phaser.GameObjects.Container {
   private damage: number;
   private cooldownMultiplier: number;
   private damageMultiplier: number;
+  private projectileSpeedMultiplier: number;
   private criticalChanceMultiplier: number;
   private criticalDamageMultiplier: number;
   public static maxRotation: number = Math.PI / 2;
   public static minRotation: number = Player.maxRotation * -1;
  
+  private logStats() {
+    console.log(`HP: ${this.getHpString()}`);
+    console.log(this.criticalChance * this.criticalChanceMultiplier);
+    console.log(`Cooldown: ${this.cooldownMultiplier}`);
+    console.log(`Critical Percent: ${this.criticalChanceMultiplier}`);
+    console.log(`Critical Multiplier: ${this.criticalDamageMultiplier}`);
+    console.log(`Damage: ${this.damageMultiplier}`);
+    console.log(`Speed: ${this.projectileSpeedMultiplier}`);
+  }
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
@@ -46,6 +56,7 @@ export class Player extends Phaser.GameObjects.Container {
     this.criticalChance = 0.05;
     this.criticalMultiplier = 1.5;
     this.projectileSpeed = 10;
+    this.projectileSpeedMultiplier = 1;
     this.projectileSize = 10;
 
     this.gun = new Gun ({
@@ -65,8 +76,34 @@ export class Player extends Phaser.GameObjects.Container {
     this.height = this.gun.width;
   }
 
-  applyUpgrade(upgrade: Upgrade): void {
-
+  public applyUpgrade(upgrade: Upgrade) {
+    switch (upgrade.upgradeEffect.Effect) {
+      case "PlayerHealth":
+        this.maxHitPoints = Math.ceil(upgrade.modifierValue * this.maxHitPoints);
+        this.hitPoints = Math.ceil(this.hitPoints * upgrade.modifierValue);
+        break;
+      case "PlayerRestoreHealth":
+        this.hitPoints = Math.min(this.maxHitPoints, this.hitPoints + this.hitPoints * upgrade.modifierValue);
+        break;
+      case "PlayerDamage":
+        this.damageMultiplier *= upgrade.modifierValue;
+        break;
+      case "PlayerCriticalChance":
+        this.criticalChanceMultiplier += upgrade.modifierValue;
+        break;
+      case "PlayerCriticalDamage":
+        this.criticalDamageMultiplier *= upgrade.modifierValue;
+        break;
+      case "PlayerFireRate":
+        this.cooldownMultiplier /= upgrade.modifierValue;
+        break;
+      case "PlayerProjectileSpeed":
+        this.projectileSpeedMultiplier *= upgrade.modifierValue;
+        break;
+      default:
+        break;
+    }
+    this.logStats();
   }
 
   update(wave: Wave): void {
@@ -105,11 +142,11 @@ export class Player extends Phaser.GameObjects.Container {
         },
         size: this.projectileSize,
         damage: this.damage * (isCritical ? this.criticalMultiplier * this.criticalDamageMultiplier : this.damageMultiplier),
-        speed: this.projectileSpeed,
+        speed: this.projectileSpeed * this.projectileSpeedMultiplier,
         isCritical
       })
     );
-    this.cooldownRemaining = this.cooldown;
+    this.cooldownRemaining = this.cooldown * this.cooldownMultiplier;
   }
 
   private checkEnemyCollisionsWithBase(wave: Wave) {
@@ -132,8 +169,8 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   levelUp(): void {
-    this.cooldown *= 0.9;
-    this.damage *= 1.1;
+    // this.cooldown *= 0.9;
+    // this.damage *= 1.1;
   }
 
   getHpString(): string {
