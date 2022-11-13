@@ -33,7 +33,7 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     this.waveCount = 0;
-    this.enemyCount = 5;
+    this.enemyCount =  5;
     this.background = this.add.image(0, 0, "background").setOrigin(0,0).setScale(Phaser.ScaleModes.NEAREST);
     this.background.scaleX =  this.sys.canvas.width / this.background.width
     this.background.scaleY =  this.sys.canvas.height / this.background.height

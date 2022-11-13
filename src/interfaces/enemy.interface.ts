@@ -10,4 +10,5 @@ export interface IEnemyConstructor {
   frame?: string;
   options?: Phaser.Types.GameObjects.Graphics.Options;
   damage: number;
+  multiplierIndex: number;
 }

@@ -11,6 +11,7 @@ export class Wave {
   enemyHp: number;
   enemySpeed: number;
   enemyDamage: number;
+  multiplier: number[];
 
   constructor(aParams: IWaveConstructor) {
     this.scene = aParams.scene;
@@ -22,6 +23,7 @@ export class Wave {
     this.enemySpeed = 0.7 * (1 + Math.pow(1.01, this.waveNumber));
     this.enemyHp = 120 * Math.pow(1.05, this.waveNumber);
     this.enemyDamage = 30 * Math.pow(1.02, this.waveNumber);
+    this.multiplier = [1, 1.5, 2, 2.5, 3]
     this.initWave();
   }
 
@@ -48,20 +50,27 @@ export class Wave {
   }
 
   private spawnEnemy(): void {
+    let randomInt = this.getRandomInt();
+    let attributeMultiplier = this.multiplier[randomInt]; 
     let enemyPosition = this.generateEnemyPosition()
     let enemyOptions = {
       x: enemyPosition.x,
       y: enemyPosition.y,
       baseX: this.basePosition.x,
       baseY: this.basePosition.y,
-      totalVelocity: this.enemySpeed,
+      totalVelocity: this.enemySpeed / (attributeMultiplier),
       texture: this.getRandomEnemyTexture(), 
       scene: this.scene,
-      hitPoints: this.enemyHp,
-      damage: this.enemyDamage
+      hitPoints: this.enemyHp * attributeMultiplier,
+      damage: this.enemyDamage * attributeMultiplier,
+      multiplierIndex: randomInt
     }
     this.enemies.push(new Enemy(enemyOptions));
   }
+
+private getRandomInt(): number{
+  return(Math.floor(Math.random() * this.multiplier.length))
+}
 
 private getRandomEnemyTexture(): string {
   let textures = ['e01', 'e02', 'e03', 'e04'];

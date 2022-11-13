@@ -7,7 +7,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     private velocity: Phaser.Math.Vector2;
     private hp: number;
     private attack: number;
-
+    private multiplier: number[];
     public getBody(): any {
         return this.body;
     }
@@ -23,8 +23,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
         this.hp = aParams.hitPoints;
         this.attack = aParams.damage;
-
-        this.scale = 2;
+        this.multiplier = [1.8, 1.9, 2, 2.1, 2.2]
+        this.scale = this.multiplier[aParams.multiplierIndex];
 
         this.setVelocity(aParams.baseX, aParams.baseY, aParams.totalVelocity);
 

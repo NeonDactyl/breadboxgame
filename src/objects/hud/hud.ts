@@ -51,7 +51,6 @@ export class Hud  extends Phaser.GameObjects.Container {
   update(updateParams: IHudUpdate) : void {
 
     this.hpText.text = updateParams.hpText;
-    console.log(updateParams.hpText);
     this.addScore(updateParams.damageDealt);
   }
 
