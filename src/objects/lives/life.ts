@@ -12,8 +12,6 @@ export class Life extends Phaser.GameObjects.Sprite {
   private initSprite() {
     this.setOrigin(0, 0.0);
     this.setScale(0.5);
-    this.rotation = 0;
-    this.setInteractive();
   }
 
 }
