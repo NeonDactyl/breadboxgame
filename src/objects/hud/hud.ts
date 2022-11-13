@@ -26,7 +26,7 @@ export class Hud  extends Phaser.GameObjects.Container {
       x: 0,
       y: 60
     })   
-    
+   
     this.add([this.hpText, this.level, this.score])
   }
 
