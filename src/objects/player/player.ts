@@ -46,7 +46,7 @@ export class Player extends Phaser.GameObjects.Container {
     this.cooldownRemaining = 0;
 
     this.cooldown = 15;
-    this.damage = 100;
+    this.damage = 110;
 
     this.cooldownMultiplier = 1;
     this.damageMultiplier = 1;
@@ -89,7 +89,7 @@ export class Player extends Phaser.GameObjects.Container {
         this.damageMultiplier *= upgrade.modifierValue;
         break;
       case "PlayerCriticalChance":
-        this.criticalChanceMultiplier += upgrade.modifierValue;
+        this.criticalChanceMultiplier *= (1 + upgrade.modifierValue);
         break;
       case "PlayerCriticalDamage":
         this.criticalDamageMultiplier *= upgrade.modifierValue;
