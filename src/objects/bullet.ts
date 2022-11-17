@@ -29,10 +29,12 @@ export class Bullet extends Phaser.GameObjects.Graphics {
     );
 
     this.fillStyle(this.selectedColor, 1);
-    this.fillCircle(0, 0, aParams.size);
+    this.lineStyle(1, 0x000000);
     if (this.isCritical) {
       this.drawCriticalTriangles(aParams.size + 5);
     }
+    this.fillCircle(0, 0, aParams.size);
+    this.strokeCircle(0, 0, aParams.size);
 
     this.scene.physics.world.enable(this);
     this.body.allowDrag = false;
@@ -56,7 +58,9 @@ export class Bullet extends Phaser.GameObjects.Graphics {
     let x5 = x2 * -1;
     let y5 = y2 * -1;
     this.fillTriangle(x0, y0, x1, y1, x2, y2);
+    this.strokeTriangle(x0, y0, x1, y1, x2, y2);
     this.fillTriangle(x3, y3, x4, y4, x5, y5);
+    this.strokeTriangle(x3, y3, x4, y4, x5, y5);
   }
 
   update(): void {

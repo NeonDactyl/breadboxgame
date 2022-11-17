@@ -40,6 +40,7 @@ export class Wave {
   }
 
   private initWave(): void {
+    this.enemies = [];
     for (let i = 0; i < this.enemyCount ; i++) {
       this.spawnEnemy();
       this.enemies[this.enemies.length - 1 ].setTint(this.generateColor());

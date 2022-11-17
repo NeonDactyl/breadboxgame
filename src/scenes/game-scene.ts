@@ -13,12 +13,12 @@ export class GameScene extends Phaser.Scene {
   private enemyCount: number;
   private hpText: Phaser.GameObjects.Text;
   private enemyUpgrades: Upgrade[];
+  public static instanceCount: number = 1;
+  public instanceId: number;
 
   constructor() {
     super({ key: 'MainScene' });
-    this.waveCount = 0;
-    this.enemyCount = 5;
-    this.enemyUpgrades = [];
+    this.instanceId = GameScene.instanceCount++;
   }
 
   preload(): void {
@@ -32,9 +32,16 @@ export class GameScene extends Phaser.Scene {
     this.load.image('e04', '../enemy-sprites/e04.png');
   }
 
-  create(): void {
-    this.events.on('resume', this.resumeScene.bind(this));
+  init(): void {
+    this.events.on('resume', this.resume.bind(this));
     this.enemyCount = 5;
+    this.waveCount = 0;
+    this.enemyCount = 5;
+    this.enemyUpgrades = [];
+    this.events.on('shutdown', () => { this.events.off('resume')});
+  }
+
+  create(): void {
     this.background = this.add.image(0, 0, "background").setOrigin(0,0).setScale(Phaser.ScaleModes.NEAREST);
     this.background.scaleX =  this.sys.canvas.width / this.background.width
     this.background.scaleY =  this.sys.canvas.height / this.background.height
@@ -72,7 +79,7 @@ export class GameScene extends Phaser.Scene {
     let waveOver: boolean = this.wave.isWaveOver();
 
     if (playerDead) {
-      this.scene.pause();
+      this.scene.stop();
       this.scene.launch('GameOverScene', this.hud);
     }
 
@@ -93,7 +100,7 @@ export class GameScene extends Phaser.Scene {
   }
 
 
-  public resumeScene(scene: Phaser.Scene, upgrade: Upgrade) {
+  public resume(scene: Phaser.Scene, upgrade: Upgrade) {
     switch (upgrade.upgradeEffect.Target) {
       case UpgradeTarget.Player:
         this.player.applyUpgrade(upgrade);

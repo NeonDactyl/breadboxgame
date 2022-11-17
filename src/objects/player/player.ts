@@ -26,6 +26,8 @@ export class Player extends Phaser.GameObjects.Container {
   private criticalDamageMultiplier: number;
   public static maxRotation: number = Math.PI / 2;
   public static minRotation: number = Player.maxRotation * -1;
+  public static instanceCount: number = 0;
+  public thisInstanceId: number;
  
   private logStats() {
     console.log(`HP: ${this.getHpString()}`);
@@ -35,11 +37,14 @@ export class Player extends Phaser.GameObjects.Container {
     console.log(`Critical Multiplier: ${this.criticalDamageMultiplier}`);
     console.log(`Damage: ${this.damageMultiplier}`);
     console.log(`Speed: ${this.projectileSpeedMultiplier}`);
+    console.log('Instance ID: ' + this.thisInstanceId);
   }
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
 
+    Player.instanceCount++;
+    this.thisInstanceId = Player.instanceCount;
     this.hitPoints = 300;
     this.maxHitPoints = 300;
     this.bullets = [];
@@ -103,7 +108,7 @@ export class Player extends Phaser.GameObjects.Container {
       default:
         break;
     }
-    this.logStats();
+    //this.logStats();
   }
 
   update(wave: Wave): void {
