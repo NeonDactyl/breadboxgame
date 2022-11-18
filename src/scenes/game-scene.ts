@@ -3,6 +3,7 @@ import {Player} from '../objects/player/player';
 import {Upgrade} from '../objects/upgrades/Upgrade';
 import { Hud } from '../objects/hud/hud';
 import {UpgradeTarget} from '../objects/upgrades/UpgradeEffect';
+import { Lives } from '../objects/lives/lives';
 
 export class GameScene extends Phaser.Scene {
   private player: Player;
@@ -15,6 +16,7 @@ export class GameScene extends Phaser.Scene {
   private enemyUpgrades: Upgrade[];
   public static instanceCount: number = 1;
   public instanceId: number;
+  private lives: Lives;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -30,10 +32,12 @@ export class GameScene extends Phaser.Scene {
     this.load.image('e02', '../enemy-sprites/e02.png');
     this.load.image('e03', '../enemy-sprites/e03.png');
     this.load.image('e04', '../enemy-sprites/e04.png');
+    this.load.image('life', '../lives-sprites/life.png');
   }
 
   init(): void {
     this.events.on('resume', this.resume.bind(this));
+    console.log('init');
     this.enemyCount = 5;
     this.waveCount = 0;
     this.enemyCount = 5;
@@ -49,11 +53,13 @@ export class GameScene extends Phaser.Scene {
     this.player = new Player ({
       scene: this, x: this.game.canvas.width / 2, y: this.game.canvas.height - 30
     });
+
     this.hud = new Hud({
       scene: this, x: 10, y: 10
     });
     this.hud.setDepth(15);
     
+
     this.wave = new Wave({
       scene: this,
       enemyCount: this.enemyCount,
@@ -62,12 +68,21 @@ export class GameScene extends Phaser.Scene {
       upgrades: this.enemyUpgrades
     });
 
+    this.lives = new Lives({
+      scene: this,
+      x: 1080,
+      y: 10
+    })
+
 
     this.add.existing(this.player);
     this.add.existing(this.hud);
+    this.add.existing(this.lives);
+
   }
   
   update(): void {
+    if (!this.scene.isActive()) return;
     this.player.update(this.wave);
     this.wave.update(this.player.getBullets());
     this.hud.update({
@@ -79,8 +94,16 @@ export class GameScene extends Phaser.Scene {
     let waveOver: boolean = this.wave.isWaveOver();
 
     if (playerDead) {
-      this.scene.stop();
-      this.scene.launch('GameOverScene', this.hud);
+      this.scene.pause();
+      this.player.lives -= 1;
+      this.lives.lostLife(this.player.lives);
+      if(this.player.lives > 0){
+        this.restartWave();
+        this.scene.launch('LostLifeScene', this.lives);
+      }
+      else{
+        this.scene.launch('GameOverScene', this.hud);
+      }
     }
 
     if (waveOver)
@@ -93,6 +116,18 @@ export class GameScene extends Phaser.Scene {
       this.hud.nextLevel();
     }
     
+  }
+
+  private restartWave(){
+    this.player.clearBullets();
+    this.player.resetHitPoints();
+    this.wave.clearEnemies();
+    //this.wave = new Wave({
+      //scene: this,
+      //enemyCount: this.enemyCount,
+      //waveNumber: this.waveCount,
+      //upgrades: this.enemyUpgrades,
+      //basePosition: new Phaser.Geom.Point(this.game.canvas.width / 2, this.game.canvas.height - 30)});
   }
 
   private getHpText(): string {

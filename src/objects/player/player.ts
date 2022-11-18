@@ -39,6 +39,7 @@ export class Player extends Phaser.GameObjects.Container {
     console.log(`Speed: ${this.projectileSpeedMultiplier}`);
     console.log('Instance ID: ' + this.thisInstanceId);
   }
+  public lives: number;
   
   constructor(aParams: IPlayerOptions) {
     super(aParams.scene, aParams.x, aParams.y);
@@ -49,7 +50,7 @@ export class Player extends Phaser.GameObjects.Container {
     this.maxHitPoints = 300;
     this.bullets = [];
     this.cooldownRemaining = 0;
-
+    this.lives = 3;
     this.cooldown = 15;
     this.damage = 110;
 
@@ -75,7 +76,7 @@ export class Player extends Phaser.GameObjects.Container {
       x: 0,
       y: 0
     });
-
+    
     this.add([this.gun, this.dome]);
     this.width = this.dome.width;
     this.height = this.gun.width;
@@ -111,7 +112,12 @@ export class Player extends Phaser.GameObjects.Container {
     //this.logStats();
   }
 
+  resetHitPoints(): void {
+    this.hitPoints = this.maxHitPoints;
+  }
+
   update(wave: Wave): void {
+    if (!this.active) return;
     this.handleInput();
     this.updateBullets();
     this.checkEnemyCollisionsWithBase(wave);
