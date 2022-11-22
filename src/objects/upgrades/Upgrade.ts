@@ -87,8 +87,6 @@ export class Upgrade {
       let upgradeLevel = UpgradeLevel.GetRandomUpgradeLevel();
       upgrades.push(new Upgrade(upgradeLevel, upgradeEffects[i]));
     }
-    const upgradeLevel: UpgradeLevel = UpgradeLevel.GetRandomUpgradeLevel();
-    const upgradeEffect: UpgradeEffect = UpgradeEffect.GetRandomUpgradeEffect();
     
     return upgrades;
   }
