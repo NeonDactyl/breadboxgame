@@ -79,11 +79,18 @@ export class Upgrade {
     this.modifierValue = tierSection.modifier;
   }
 
-  public static CreateRandomUpgrade(): Upgrade {
+  public static CreateRandomUpgrades(count: number): Upgrade[] {
+    if (count > UpgradeEffect.Effects.length) throw "Requesting too many upgrades";
+    let upgrades: Upgrade[] = [];
+    let upgradeEffects = UpgradeEffect.GetRandomUpgradeEffects(count);
+    for (let i = 0; i < count; i++) {
+      let upgradeLevel = UpgradeLevel.GetRandomUpgradeLevel();
+      upgrades.push(new Upgrade(upgradeLevel, upgradeEffects[i]));
+    }
     const upgradeLevel: UpgradeLevel = UpgradeLevel.GetRandomUpgradeLevel();
     const upgradeEffect: UpgradeEffect = UpgradeEffect.GetRandomUpgradeEffect();
     
-    return new Upgrade(upgradeLevel, upgradeEffect);
+    return upgrades;
   }
 }
 

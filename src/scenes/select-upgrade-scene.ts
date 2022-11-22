@@ -14,13 +14,13 @@ export class SelectUpgradeScene extends Phaser.Scene {
     this.add.text( 100, 100, 'pick your upgrade');
 
     this.upgradeButtons = [];
-    for (let i = 0; i < 5; i++) {
-      let upgrade = Upgrade.CreateRandomUpgrade();
-      this.upgradeButtons.push(new UpgradeButton(upgrade, {
+    let upgrades = Upgrade.CreateRandomUpgrades(5);
+    for (let i = 0; i < upgrades.length; i++) {
+      this.upgradeButtons.push(new UpgradeButton(upgrades[i], {
         width: 0,
         height: 0,
         scene: this,
-        clickCallback: () => {this.selectUpgrade(upgrade)},
+        clickCallback: () => {this.selectUpgrade(upgrades[i])},
         options: {
           x: this.sys.canvas.width / 2 - 400 + i * 200,
           y: this.sys.canvas.height / 2

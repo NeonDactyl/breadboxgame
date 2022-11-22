@@ -20,17 +20,23 @@ export class UpgradeEffect {
     "EnemyHealth"
   ];
 
-  public static GetRandomUpgradeEffect(): UpgradeEffect {
-    const randEffect = UpgradeEffect.Effects[Math.floor(Math.random() * UpgradeEffect.Effects.length)];
-    let upgradeTarget: UpgradeTarget;
-    if (randEffect.startsWith('Player')) {
-      upgradeTarget = UpgradeTarget.Player;
-    } else if (randEffect.startsWith('Enemy')) {
-      upgradeTarget = UpgradeTarget.Enemy;
-    } else {
-      throw "something broke";
-    }
-    return new UpgradeEffect(randEffect, upgradeTarget);
+  public static GetRandomUpgradeEffects(count: number): UpgradeEffect[] {
+    const randEffects = UpgradeEffect.Effects.sort((a, b) => Math.random() - 0.5).slice(0, count);
+    let effects: UpgradeEffect[] = [];
+    randEffects.forEach((randEffect) => {
+
+      let upgradeTarget: UpgradeTarget;
+      if (randEffect.startsWith('Player')) {
+        upgradeTarget = UpgradeTarget.Player;
+      } else if (randEffect.startsWith('Enemy')) {
+        upgradeTarget = UpgradeTarget.Enemy;
+      } else {
+        throw "something broke";
+      }
+      effects.push(new UpgradeEffect(randEffect, upgradeTarget));
+    });
+ 
+    return effects;
   }
 }
 

@@ -89,7 +89,7 @@ export class Player extends Phaser.GameObjects.Container {
         this.hitPoints = Math.ceil(this.hitPoints * upgrade.modifierValue);
         break;
       case "PlayerRestoreHealth":
-        this.hitPoints = Math.min(this.maxHitPoints, this.hitPoints + this.hitPoints * upgrade.modifierValue);
+        this.hitPoints = Math.min(this.maxHitPoints, this.hitPoints + this.maxHitPoints * upgrade.modifierValue);
         break;
       case "PlayerDamage":
         this.damageMultiplier *= upgrade.modifierValue;
