@@ -24,8 +24,9 @@ export class Player extends Phaser.GameObjects.Container {
   private projectileSpeedMultiplier: number;
   private criticalChanceMultiplier: number;
   private criticalDamageMultiplier: number;
-  public static maxRotation: number = Math.PI / 2;
-  public static minRotation: number = Player.maxRotation * -1;
+  public static maxRotation: number = Math.PI;
+  //public static minRotation: number = Player.maxRotation * -1;
+  public static minRotation: number = 0;
   public static instanceCount: number = 0;
   public thisInstanceId: number;
  
@@ -65,19 +66,22 @@ export class Player extends Phaser.GameObjects.Container {
     this.projectileSpeedMultiplier = 1;
     this.projectileSize = 10;
 
-    this.gun = new Gun ({
-      scene: this.scene,
-      x: 0,
-      y: 0
-    });
-
     this.dome = new homeBase({
       scene: this.scene,
       x: 0,
-      y: 0
+      y: -50
     });
+
+    this.gun = new Gun ({
+      scene: this.scene,
+      x: this.dome.x,
+      y: this.dome.y
+    });
+
+    let dot = this.scene.add.circle(this.dome.x, this.dome.y, 4, 0xffffff);
+    console.log(dot);
     
-    this.add([this.gun, this.dome]);
+    this.add([this.dome, this.gun, dot]);
     this.width = this.dome.width;
     this.height = this.gun.width;
   }
@@ -125,14 +129,14 @@ export class Player extends Phaser.GameObjects.Container {
 
   private handleInput(): void {
     this.cooldownRemaining = Math.max(0, this.cooldownRemaining - 1);
-    let deltaX = this.scene.input.x - this.x;
-    let deltaY = this.scene.input.y - this.y;
-    let angle = Math.atan2(deltaY, deltaX) + (Math.PI / 2);
+    let deltaX = this.scene.input.x - (this.x - this.dome.y);
+    let angle = Phaser.Math.Angle.Between(this.scene.input.x, this.scene.input.y, this.x + this.dome.x, this.y + this.dome.y);
     if (angle >= Player.maxRotation) {
-      angle = (deltaX < 0 ? Player.minRotation : Player.maxRotation);
+      angle = (deltaX > 0 ? Player.minRotation : Player.maxRotation);
     }
-    if (angle <= Player.minRotation) angle = Player.minRotation;
-    this.gun.setRotation(angle - (Math.PI / 2));
+    if (angle <= Player.minRotation) 
+      angle = (deltaX < 0 ? Player.minRotation : Player.maxRotation);
+    this.gun.setRotation(angle - (Math.PI));
 
     if (this.scene.input.activePointer.primaryDown && this.cooldownRemaining == 0) {
       this.shoot();
@@ -141,15 +145,17 @@ export class Player extends Phaser.GameObjects.Container {
 
   private shoot(): void {
     let isCritical: boolean = Math.random() <= this.criticalChance * this.criticalChanceMultiplier;
-    let r = this.gun.rotation + Math.PI / 2;
-    let offset = 0.7;
+    let r = this.gun.rotation;
+    let offset = 0.4;
+    let x = this.x + this.dome.x + (this.gun.width * offset * Math.cos(r));;
+    let y = this.y + this.dome.y + (this.gun.width * offset * Math.sin(r));;
     this.bullets.push(
       new Bullet({
         scene: this.scene,
-        rotation: this.gun.rotation,
+        rotation: r,
         options: {
-          x: this.x + (this.gun.width * Math.sin(r) * offset),
-          y: this.y - (this.gun.width * Math.cos(r) * offset)
+          x: x,
+          y: y
         },
         size: this.projectileSize,
         damage: this.damage * (isCritical ? this.criticalMultiplier * this.criticalDamageMultiplier : this.damageMultiplier),

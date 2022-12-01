@@ -1,7 +1,23 @@
 import { Enemy } from './enemy';
+import { enemyConfig } from './enemies/enemyConfig';
 import { IWaveConstructor } from '../interfaces/wave.interface';
 import { Bullet } from './bullet';
 import {Upgrade} from './upgrades/Upgrade';
+import {Toad} from './enemies/toad';
+import {Sloth} from './enemies/sloth';
+import {Shark} from './enemies/shark';
+import {Puffer} from './enemies/puffer';
+import {Owl} from './enemies/owl';
+import {Ostrich} from './enemies/ostrich';
+import {Frog3} from './enemies/frog_3';
+import {Frog2} from './enemies/frog_2';
+import {Frog} from './enemies/frog';
+import {Dog2} from './enemies/dog_2';
+import {Dog} from './enemies/dog';
+import {Cat} from './enemies/cat';
+import {Bear} from './enemies/bear';
+import {Alligator} from './enemies/alligator';
+import {Owl2} from './enemies/owl2';
 export class Wave {
   scene: Phaser.Scene;
   enemyCount: number;
@@ -30,6 +46,7 @@ export class Wave {
     this.waveNumber = aParams.waveNumber;
     this.damageDealt = 0;
     this.enemySpeed = 0.5 * (1 + Math.pow(1.02, this.waveNumber)) * this.enemySpeedUpgrades;
+    // this.enemySpeed *= 0.01
     this.enemyHp = Math.floor(100 * Math.pow(1.04, this.waveNumber) * this.enemyHealthUpgrades);
     this.enemyDamage = Math.floor(30 * Math.pow(1.04, this.waveNumber) * this.enemyDamageUpgrades);
     this.initWave();
@@ -50,7 +67,6 @@ export class Wave {
     this.enemies = [];
     for (let i = 0; i < this.enemyCount ; i++) {
       this.spawnEnemy();
-      this.enemies[this.enemies.length - 1 ].setTint(this.generateColor());
       this.enemies[this.enemies.length - 1].setDepth(2);
     }
   }
@@ -83,12 +99,71 @@ export class Wave {
       baseX: this.basePosition.x,
       baseY: this.basePosition.y,
       totalVelocity: this.enemySpeed,
-      texture: this.getRandomEnemyTexture(), 
       scene: this.scene,
       hitPoints: this.enemyHp,
       damage: this.enemyDamage
     }
-    this.enemies.push(new Enemy(enemyOptions));
+    let enemy: Enemy;
+    switch (this.getRandomEnemy()) {
+      case "alligator":
+        enemy = new Alligator(enemyOptions);
+        break;
+      case "bear":
+        enemy = new Bear(enemyOptions);
+        break;
+      case "cat":
+        enemy = new Cat(enemyOptions);
+        break;
+      case "dog":
+        enemy = new Dog(enemyOptions);
+        break;
+      case "dog_2":
+        enemy = new Dog2(enemyOptions);
+        break;
+      case "frog":
+        enemy = new Frog(enemyOptions);
+        break;
+      case "frog_2":
+        enemy = new Frog2(enemyOptions);
+        break;
+      case "frog_3":
+        enemy = new Frog3(enemyOptions);
+        break;
+      case "ostrich":
+        enemy = new Ostrich(enemyOptions);
+        break;
+      case "owl":
+        enemy = new Owl(enemyOptions);
+        break;
+      case "owl_2":
+        enemy = new Owl2(enemyOptions);
+        break;
+      case "puffer":
+        enemy = new Puffer(enemyOptions);
+        break;
+      case "shark":
+        enemy = new Shark(enemyOptions);
+        break;
+      case "sloth":
+        enemy = new Sloth(enemyOptions);
+        break;
+      case "toad":
+        enemy = new Toad(enemyOptions);
+        break;
+      default:
+        throw "invalid enemy somehow";
+    }
+
+    this.enemies.push(enemy);
+  }
+  
+  private getRandomEnemy(): string {
+    let enemyWeights = enemyConfig.map((sum => value => sum += value.weight)(0));
+    let randNum = Math.random() * Math.max(...enemyWeights);
+    for (let i = 0; i < enemyWeights.length; i++) {
+      if (randNum <= enemyWeights[i]) return enemyConfig[i].name;
+    }
+    return '';
   }
 
   private getRandomEnemyTexture(): string {

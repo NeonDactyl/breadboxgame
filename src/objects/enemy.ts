@@ -1,62 +1,69 @@
+import Phaser from "phaser";
 import { IEnemyConstructor } from "../interfaces/enemy.interface";
 import { Bullet } from "./bullet";
 
 export class Enemy extends Phaser.GameObjects.Sprite {
-    declare body: Phaser.Physics.Arcade.Body;
+  declare body: Phaser.Physics.Arcade.Body;
+  private readonly maxHeight = 100;
+  private readonly maxWidth = 100;
 
-    private velocity: Phaser.Math.Vector2;
-    private hp: number;
-    private attack: number;
+  private velocity: Phaser.Math.Vector2;
+  private hp: number;
+  private attack: number;
 
-    public getBody(): any {
-        return this.body;
-    }
+  public getBody(): any {
+      return this.body;
+  }
 
-    constructor(aParams: IEnemyConstructor) {
-        super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
-        this.x = aParams.x;
-        this.y = aParams.y;
+  constructor(aParams: IEnemyConstructor) {
+    super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
+    this.x = aParams.x;
+    this.y = aParams.y;
 
-        this.scene.physics.world.enable(this);
-        this.body.allowGravity = false;
-        this.body.allowDrag = false;
+    this.scene.physics.world.enable(this);
+    this.body.allowGravity = false;
+    this.body.allowDrag = false;
+    
+    let widthRatio = this.maxWidth / this.texture.getSourceImage().width;
+    let heightRatio = this.maxHeight / this.texture.getSourceImage().height;
 
-        this.hp = aParams.hitPoints;
-        this.attack = aParams.damage;
+    this.scale = Math.min(widthRatio, heightRatio);
 
-        this.scale = 2;
+    this.hp = aParams.hitPoints;
+    this.attack = aParams.damage;
 
-        this.setVelocity(aParams.baseX, aParams.baseY, aParams.totalVelocity);
 
-        this.scene.add.existing(this);
-    }
+    this.setVelocity(aParams.baseX, aParams.baseY, aParams.totalVelocity);
 
-    public takeDamageFromBullet(bullet: Bullet) {
-        this.hp = this.hp - bullet.damage;
-    }
+    this.scene.add.existing(this);
+  }
 
-    public isDead(): boolean { 
-        return this.hp <= 0;
-    }
+  public takeDamageFromBullet(bullet: Bullet) {
+    this.hp = this.hp - bullet.damage;
+  }
 
-    update(): void {
-        this.applyForces();
-    }
+  public isDead(): boolean { 
+    return this.hp <= 0;
+  }
 
-    public getAttack(): number {
-        return this.attack;
-    }
+  update(): void {
+    this.applyForces();
+  }
 
-    private applyForces(): void {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-    }
+  public getAttack(): number {
+    return this.attack;
+  }
 
-    private setVelocity(baseX: number, baseY: number, totalVelocity: number)
-    {
-        let xDelta = baseX - this.x;
-        let yDelta = baseY - this.y;
-        let angle = Math.atan2(yDelta, xDelta);
-        this.velocity = this.scene.physics.velocityFromRotation(angle, totalVelocity);
-    }
+  private applyForces(): void {
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+  }
+
+  private setVelocity(baseX: number, baseY: number, totalVelocity: number)
+  {
+    let xDelta = baseX - this.x;
+    let yDelta = baseY - this.y;
+    let angle = Math.atan2(yDelta, xDelta);
+    this.velocity = this.scene.physics.velocityFromRotation(angle, totalVelocity);
+  }
 }

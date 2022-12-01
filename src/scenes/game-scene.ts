@@ -25,8 +25,6 @@ export class GameScene extends Phaser.Scene {
 
   preload(): void {
     this.load.image('bgImage', '../parallax-mountain-bg_all.png');
-    this.load.image('homebase', '../Dome1.png');
-    this.load.image('gun', '../lasergun.png');
     this.load.image('background', '../parallax-mountain-bg_all.png');
     this.load.image('e01', '../enemy-sprites/e01.png');
     this.load.image('e02', '../enemy-sprites/e02.png');

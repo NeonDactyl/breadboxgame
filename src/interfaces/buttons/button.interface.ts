@@ -1,4 +1,5 @@
-import { IGraphicsOptions } from '../graphics.interface';
+import {IGraphicsOptions} from "../graphics.interface";
+
 export interface IButtonOptions extends IGraphicsOptions {
     clickCallback: Function;
     width?: number;
