@@ -46,7 +46,7 @@ export class Wave {
     this.waveNumber = aParams.waveNumber;
     this.damageDealt = 0;
     this.enemySpeed = 0.5 * (1 + Math.pow(1.02, this.waveNumber)) * this.enemySpeedUpgrades;
-    // this.enemySpeed *= 0.01
+    this.enemySpeed *= 0.05
     this.enemyHp = Math.floor(100 * Math.pow(1.04, this.waveNumber) * this.enemyHealthUpgrades);
     this.enemyDamage = Math.floor(30 * Math.pow(1.04, this.waveNumber) * this.enemyDamageUpgrades);
     this.initWave();

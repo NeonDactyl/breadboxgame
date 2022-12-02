@@ -4,6 +4,9 @@ import {UpgradeButton} from "../objects/buttons/upgrade-button";
 export class MainMenuScene extends Phaser.Scene {
   startButton: TextButton;
   buttonPresses: number = 0;
+  private bill: Phaser.GameObjects.Image;
+  private owen: Phaser.GameObjects.Image;
+  private wow: Phaser.GameObjects.Image;
 
   constructor() {
     super({key: 'MainMenuScene'});
@@ -42,11 +45,29 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('shark', 'enemy-sprites/shark.png');
     this.load.image('sloth', 'enemy-sprites/sloth.png');
     this.load.image('toad', 'enemy-sprites/toad.png');
+    this.load.image('background', '../bg.png');
+    this.load.image('life', '../lives-sprites/life.png');
+    this.load.json('shapes', '../sprite_matter.json');
+    this.load.image('riskyChoice', 'riskyChoice.png');
+    this.load.image('beans', 'beans.png');
+    this.load.image('juice', 'juice.png');
+    this.load.image('bill', 'bill.png');
+    this.load.image('owen', 'owen.png');
+    this.load.image('wow', 'wow.png');
   }
 
   create(): void {
+    this.owen = this.add.image(900, 700, 'owen');
+    this.owen.setScale(0.6);
+
+    this.wow = this.add.image(950, 350, 'wow');
+    this.wow.setScale(0.3);
+
+    this.bill = this.add.image(200, 300, 'bill');
+    this.bill.setScale(1);
+
     let startButtonText = "BEGIN";
-    // let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
+    let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
     // this.text = this.add.text(10, 10, '', { fill: '#00ff00' }).setDepth(1);
     this.startButton = new TextButton({
       text: startButtonText,
@@ -68,6 +89,10 @@ export class MainMenuScene extends Phaser.Scene {
 
   public update() {
     this.startButton.update();
+    this.bill.angle += 0.5;
+    this.wow.setRotation(Math.sin(this.time.now / 250) / 4);
+    this.owen.setScale(0.4 + Math.cos(this.time.now / 500) / 10);
+    this.owen.setRotation(Math.cos(this.time.now / 350) / 11);
   }
       
   public startGame() {

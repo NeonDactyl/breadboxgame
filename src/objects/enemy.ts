@@ -26,6 +26,9 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     
     let widthRatio = this.maxWidth / this.texture.getSourceImage().width;
     let heightRatio = this.maxHeight / this.texture.getSourceImage().height;
+    let interactiveArea = this.scene.cache.json.get('shapes')[aParams.texture][0].shape;
+    let cacheObject = this.scene.cache.json.get('shapes');
+    this.setInteractive(new Phaser.Geom.Polygon(interactiveArea), Phaser.Geom.Polygon.Contains);
 
     this.scale = Math.min(widthRatio, heightRatio);
 

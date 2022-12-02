@@ -63,6 +63,7 @@ export class Player extends Phaser.GameObjects.Container {
     this.criticalChance = 0.05;
     this.criticalMultiplier = 1.5;
     this.projectileSpeed = 10;
+    //this.projectileSpeed /= 10;
     this.projectileSpeedMultiplier = 1;
     this.projectileSize = 10;
 
@@ -78,10 +79,8 @@ export class Player extends Phaser.GameObjects.Container {
       y: this.dome.y
     });
 
-    let dot = this.scene.add.circle(this.dome.x, this.dome.y, 4, 0xffffff);
-    console.log(dot);
     
-    this.add([this.dome, this.gun, dot]);
+    this.add([this.gun,  this.dome]);
     this.width = this.dome.width;
     this.height = this.gun.width;
   }

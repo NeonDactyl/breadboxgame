@@ -33,6 +33,9 @@ export class TextButton extends Button {
 
     this.on('pointerover', this.onPointerOver);
     this.on('pointerout', this.onPointerOut);
+    if (this.tooltip) {
+      this.add([this.tooltip]);
+    }
   }
 
   public onPointerOver() {
@@ -47,6 +50,7 @@ export class TextButton extends Button {
   }
 
   public update() {
+    super.update();
     this.bgImage.setTexture(this.isDown ? 'button_text_down' : 'button_text');
     this.textObject.y = this.textY + (this.isDown ? 2 : 0); 
   }

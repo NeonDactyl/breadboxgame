@@ -24,12 +24,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('background', '../bg.png');
-    this.load.image('e01', '../enemy-sprites/e01.png');
-    this.load.image('e02', '../enemy-sprites/e02.png');
-    this.load.image('e03', '../enemy-sprites/e03.png');
-    this.load.image('e04', '../enemy-sprites/e04.png');
-    this.load.image('life', '../lives-sprites/life.png');
   }
 
   init(): void {
@@ -133,16 +127,18 @@ export class GameScene extends Phaser.Scene {
 
 
   public resume(scene: Phaser.Scene, upgrade: Upgrade) {
-    switch (upgrade.upgradeEffect.Target) {
-      case UpgradeTarget.Player:
-        this.player.applyUpgrade(upgrade);
-        break;
-      case UpgradeTarget.Enemy:
-        this.enemyUpgrades.push(upgrade);
-        break;
-      default:
-        break;
-      }
+    if (upgrade) {
+      switch (upgrade.upgradeEffect.Target) {
+        case UpgradeTarget.Player:
+          this.player.applyUpgrade(upgrade);
+          break;
+        case UpgradeTarget.Enemy:
+          this.enemyUpgrades.push(upgrade);
+          break;
+        default:
+          break;
+        }
+    }
     this.enemyCount++;
     this.wave = new Wave({
       scene: this,

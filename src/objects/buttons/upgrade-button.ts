@@ -7,7 +7,6 @@ export class UpgradeButton extends Button {
   private upgradeImage: Phaser.GameObjects.Image;
   private tintHighlightAddition: number;
   private tintHighlightPercent: number;
-  private tooltip: Phaser.GameObjects.Text;
   private highDepth = 10;
   private lowDepth = 2;
 
@@ -22,26 +21,6 @@ export class UpgradeButton extends Button {
     this.upgradeImage.setTint(this.upgrade.upgradeLevel.tintColor);
     this.upgradeImage.setDepth(2);
 
-    this.tooltip = new Phaser.GameObjects.Text(this.scene,
-      0,
-      0,
-      this.upgrade.displayText,
-      {
-        backgroundColor: "#333333",
-        padding: {
-          left: 15,
-          right: 15,
-          top: 15,
-          bottom: 15
-        },
-        align: 'center',
-        wordWrap: {
-          width: 150
-        },
-      });
-    this.tooltip.setVisible(false);
-    this.tooltip.setDepth(10);
-
     this.tintHighlightAddition = this.calculateHighlight();
 
     this.width = 150;
@@ -49,28 +28,28 @@ export class UpgradeButton extends Button {
 
     this.upgradeImage.setScale(150 / this.upgradeImage.width);
 
-    this.add([this.upgradeImage, this.tooltip]);
+    this.add([this.upgradeImage]);
+    if (this.tooltip) {
+      this.add([this.tooltip]);
+    }
     this.on('pointerover', this.onPointerOver);
     this.on('pointerout', this.onPointerOut);
   }
 
   public update() {
-    this.tooltip.setX(this.scene.input.activePointer.x - this.x - this.tooltip.width / 2);
-    this.tooltip.setY(this.scene.input.activePointer.y - this.y - this.tooltip.height - 10);
+    super.update();
   }
 
   public onPointerOver() {
     super.onPointerOver();
     this.upgradeImage.setTint(this.upgrade.upgradeLevel.tintColor + this.tintHighlightAddition);
     this.setDepth(this.highDepth);
-    this.tooltip.setVisible(true);
   }
 
   public onPointerOut() {
     super.onPointerOut();
     this.upgradeImage.setTint(this.upgrade.upgradeLevel.tintColor);
     this.setDepth(this.lowDepth);
-    this.tooltip.setVisible(false);
   }
 
   private calculateHighlight(): number {

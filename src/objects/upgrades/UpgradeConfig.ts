@@ -118,11 +118,11 @@ export const UpgradeConfig:IUpgradeConfig = {
     "PlayerProjectileSpeed": {
       spriteName: "PlayerProjectileSpeed",
       "common": {
-        "display": "Shots more a teensy bit faster",
+        "display": "Shots move a teensy bit faster",
         "modifier": 1.05
       },
       "uncommon": {
-        "display": "Shots more a bit faster",
+        "display": "Shots move a bit faster",
         "modifier": 1.10
       },
       "rare": {
