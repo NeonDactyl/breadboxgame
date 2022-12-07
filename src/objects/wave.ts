@@ -46,7 +46,7 @@ export class Wave {
     this.waveNumber = aParams.waveNumber;
     this.damageDealt = 0;
     this.enemySpeed = 0.5 * (1 + Math.pow(1.02, this.waveNumber)) * this.enemySpeedUpgrades;
-    this.enemySpeed *= 0.05
+    // this.enemySpeed *= 0.05
     this.enemyHp = Math.floor(100 * Math.pow(1.04, this.waveNumber) * this.enemyHealthUpgrades);
     this.enemyDamage = Math.floor(30 * Math.pow(1.04, this.waveNumber) * this.enemyDamageUpgrades);
     this.initWave();
@@ -189,15 +189,16 @@ export class Wave {
               let b = bullets[j];
               if (this.enemies[i].active && this.scene.physics.collide(e, b))
               {
-                  this.enemies[i].takeDamageFromBullet(bullets[j]);
-                  this.damageDealt += bullets[j].damage;
-                  bullets[j].destroy();
-                  bullets.splice(j, 1);
-                  if (this.enemies[i].isDead()) {
-                      this.enemies[i].destroy();
-                      this.enemies.splice(i, 1);
-                      break;
-                  }
+                this.scene.sound.play('pop');
+                this.enemies[i].takeDamageFromBullet(bullets[j]);
+                this.damageDealt += bullets[j].damage;
+                bullets[j].destroy();
+                bullets.splice(j, 1);
+                if (this.enemies[i].isDead()) {
+                  this.enemies[i].destroy();
+                  this.enemies.splice(i, 1);
+                  break;
+                }
               }
           }
       }

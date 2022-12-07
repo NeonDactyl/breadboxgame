@@ -29,6 +29,7 @@ export class Player extends Phaser.GameObjects.Container {
   public static minRotation: number = 0;
   public static instanceCount: number = 0;
   public thisInstanceId: number;
+  //private laserSound: any;
  
   private logStats() {
     console.log(`HP: ${this.getHpString()}`);
@@ -47,8 +48,8 @@ export class Player extends Phaser.GameObjects.Container {
 
     Player.instanceCount++;
     this.thisInstanceId = Player.instanceCount;
-    this.hitPoints = 300;
-    this.maxHitPoints = 300;
+    this.hitPoints = 1500;
+    this.maxHitPoints = 1500;
     this.bullets = [];
     this.cooldownRemaining = 0;
     this.lives = 3;
@@ -143,6 +144,7 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   private shoot(): void {
+    this.scene.sound.play('laser');
     let isCritical: boolean = Math.random() <= this.criticalChance * this.criticalChanceMultiplier;
     let r = this.gun.rotation;
     let offset = 0.4;
@@ -169,6 +171,7 @@ export class Player extends Phaser.GameObjects.Container {
     for (let i = 0; i < wave.enemies.length; i++) {
       if (this.scene.physics.collide(this.dome, wave.enemies[i]))
       {
+        this.scene.sound.play('damage', { volume: 0.3});
         this.takeDamage(wave.enemies[i])
         wave.enemies[i].destroy();
         wave.enemies.splice(i, 1);
@@ -194,7 +197,7 @@ export class Player extends Phaser.GameObjects.Container {
   }
 
   public takeDamage(enemy: Enemy): void{
-    this.hitPoints -= enemy.getAttack();
+    this.hitPoints -= Math.floor(enemy.getAttack());
   }
 
   public clearBullets(): void {

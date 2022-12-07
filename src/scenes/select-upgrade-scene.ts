@@ -6,6 +6,8 @@ export class SelectUpgradeScene extends Phaser.Scene {
   upgradeButtons: UpgradeButton[];
   private canSelect = false;
   private skipButton: TextButton;
+  private juice: Phaser.GameObjects.Image;
+  private beans: Phaser.GameObjects.Image;
   constructor() {
     super({ key: 'SelectUpgradeScene' });
   }
@@ -15,15 +17,16 @@ export class SelectUpgradeScene extends Phaser.Scene {
     this.add.rectangle(80, 150, this.sys.canvas.width - 160, this.sys.canvas.height - 300, 0xaa2222, 1).setOrigin(0, 0);
     let text = this.add.text( this.sys.canvas.width / 2, 200, 'pick an upgrade', { fontSize: '4em'});
     text.setOrigin(0.5, 0.5);
-    let juice = this.add.image(800, 400, 'juice');
-    juice.setScale(0.2);
-    juice.setRotation(1);
-    juice.setTint(0xaaaaaa);
+    this.juice = this.add.image(800, 400, 'juice');
+    this.juice.setTint(0xaaaaaa);
 
-    let beans = this.add.image(300, 600, 'beans');
-    beans.setScale(0.5);
-    beans.setRotation(-0.6);
-    beans.setTint(0xaaaaaa);
+    this.beans = this.add.image(300, 600, 'beans');
+    this.beans.setScale(0.5);
+    this.beans.setTint(0xaaaaaa);
+
+    this.juice.setRotation(1.2 + Math.cos(this.time.now / 700) / 7);
+    this.beans.setRotation(0.9 + Math.cos(this.time.now / 399) / 15);
+    this.juice.setScale(0.3 + Math.cos(this.time.now / 502) / 20);
 
     this.upgradeButtons = [];
     let upgrades = Upgrade.CreateRandomUpgrades(5);
@@ -65,7 +68,7 @@ export class SelectUpgradeScene extends Phaser.Scene {
     riskyChoice.setOrigin(0, 0);
     this.skipButton = new TextButton({
       text: "Skip these upgrades",
-      clickCallback: () => {this.selectUpgrade(null)},
+      clickCallback: () => {this.selectUpgrade()},
       scene: this,
       options: {
        x: this.sys.canvas.width / 2,
@@ -98,9 +101,12 @@ export class SelectUpgradeScene extends Phaser.Scene {
       this.upgradeButtons[i].update();
     }
     this.skipButton.update();
+    this.juice.setRotation(1.2 + Math.cos(this.time.now / 700) / 7);
+    this.beans.setRotation(0.9 + Math.cos(this.time.now / 399) / 15);
+    this.juice.setScale(0.3 + Math.cos(this.time.now / 502) / 20);
   }
 
-  selectUpgrade(upgrade: Upgrade) {
+  selectUpgrade(upgrade?: Upgrade) {
     if (!this.canSelect) return;
     this.scene.stop('SelectUpgradeScene');
     this.scene.resume('MainScene', upgrade);

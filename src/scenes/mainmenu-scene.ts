@@ -7,6 +7,7 @@ export class MainMenuScene extends Phaser.Scene {
   private bill: Phaser.GameObjects.Image;
   private owen: Phaser.GameObjects.Image;
   private wow: Phaser.GameObjects.Image;
+  private music: Phaser.Sound.BaseSound;
 
   constructor() {
     super({key: 'MainMenuScene'});
@@ -54,10 +55,16 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('bill', 'bill.png');
     this.load.image('owen', 'owen.png');
     this.load.image('wow', 'wow.png');
+    this.load.audio('laser', 'laser.wav');
+    this.load.audio('pop', 'pop.ogg');
+    this.load.audio('openingTheme', 'openingTheme.ogg');
+    this.load.audio('theme', 'theme.ogg');
+    this.load.audio('damage', 'damage.ogg');
   }
 
   create(): void {
     this.owen = this.add.image(900, 700, 'owen');
+    this.sound.volume = 0.2;
     this.owen.setScale(0.6);
 
     this.wow = this.add.image(950, 350, 'wow');
@@ -66,8 +73,11 @@ export class MainMenuScene extends Phaser.Scene {
     this.bill = this.add.image(200, 300, 'bill');
     this.bill.setScale(1);
 
+    this.music = this.sound.add('openingTheme');
+    this.music.play();
+
     let startButtonText = "BEGIN";
-    let title = this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
+    this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
     // this.text = this.add.text(10, 10, '', { fill: '#00ff00' }).setDepth(1);
     this.startButton = new TextButton({
       text: startButtonText,
@@ -85,6 +95,12 @@ export class MainMenuScene extends Phaser.Scene {
 
     this.startButton.setInteractive();
     this.add.existing(this.startButton);
+
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam: any, effect: any) => {
+      this.time.delayedCall(300, () => {
+        this.scene.start('MainScene');
+      });
+    });
   }
 
   public update() {
@@ -96,7 +112,12 @@ export class MainMenuScene extends Phaser.Scene {
   }
       
   public startGame() {
-    this.scene.start('MainScene');
+    this.cameras.main.fadeOut(2000, 0, 0, 0);
+    this.tweens.add({
+      targets: this.music,
+      volume: 0,
+      duration: 2000
+    });
   }
 
 }
