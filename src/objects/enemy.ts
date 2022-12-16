@@ -35,7 +35,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.hp = aParams.hitPoints;
     this.attack = aParams.damage;
 
-
     this.setVelocity(aParams.baseX, aParams.baseY, aParams.totalVelocity);
 
     this.scene.add.existing(this);

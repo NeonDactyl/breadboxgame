@@ -5,7 +5,9 @@ export class MainMenuScene extends Phaser.Scene {
   startButton: TextButton;
   buttonPresses: number = 0;
   private bill: Phaser.GameObjects.Image;
+  private background: Phaser.GameObjects.Image;
   private owen: Phaser.GameObjects.Image;
+  private bryce: Phaser.GameObjects.Image;
   private wow: Phaser.GameObjects.Image;
   private music: Phaser.Sound.BaseSound;
 
@@ -18,6 +20,9 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('button_text_down', '../ui/button_down.png');
     this.load.image('homebase', '../Dome1.png');
     this.load.image('bryce', 'bryce.png');
+    this.load.image('roy', 'roy.png');
+    this.load.image('bread', 'bread.png');
+    this.load.image('bryce_shades', 'transparent_bryce_shades.png');
     this.load.image('gun', '../lasergun.png');
     this.load.image('arm', 'arm.png');
     this.load.image('title', '../title.png');
@@ -55,6 +60,9 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image('bill', 'bill.png');
     this.load.image('owen', 'owen.png');
     this.load.image('wow', 'wow.png');
+    this.load.image('wtf', 'wtf.png');
+    this.load.image('menuBg', 'forest-menu.jpg');
+    this.load.image('kyle', 'kyle_on_bench.png');
     this.load.audio('laser', 'laser.wav');
     this.load.audio('pop', 'pop.ogg');
     this.load.audio('openingTheme', 'openingTheme.ogg');
@@ -63,6 +71,12 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.background = this.add.image(0, 0, 'menuBg');
+    this.sound.pauseOnBlur = false;
+    this.background.width = this.sys.canvas.width;
+    this.background.height = this.sys.canvas.height;
+    this.background.setOrigin(0,0);
+
     this.owen = this.add.image(900, 700, 'owen');
     this.sound.volume = 0.2;
     this.owen.setScale(0.6);
@@ -70,11 +84,13 @@ export class MainMenuScene extends Phaser.Scene {
     this.wow = this.add.image(950, 350, 'wow');
     this.wow.setScale(0.3);
 
+    this.bryce = this.add.image(250, 750, 'bryce_shades');
+
     this.bill = this.add.image(200, 300, 'bill');
     this.bill.setScale(1);
 
     this.music = this.sound.add('openingTheme');
-    this.music.play();
+    this.music.play({loop: true});
 
     let startButtonText = "BEGIN";
     this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 100, 'title');
@@ -107,8 +123,10 @@ export class MainMenuScene extends Phaser.Scene {
     this.startButton.update();
     this.bill.angle += 0.5;
     this.wow.setRotation(Math.sin(this.time.now / 250) / 4);
-    this.owen.setScale(0.4 + Math.cos(this.time.now / 500) / 10);
+    this.owen.setScale(0.4 + Math.cos(this.time.now / 589) / 15);
     this.owen.setRotation(Math.cos(this.time.now / 350) / 11);
+    this.bryce.setScale(1.0 + Math.cos(this.time.now / 834) / 10);
+    this.bryce.setRotation(5 * Math.cos(this.time.now / 492) / 17);
   }
       
   public startGame() {

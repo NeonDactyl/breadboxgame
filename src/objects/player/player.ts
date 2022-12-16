@@ -48,8 +48,8 @@ export class Player extends Phaser.GameObjects.Container {
 
     Player.instanceCount++;
     this.thisInstanceId = Player.instanceCount;
-    this.hitPoints = 1500;
     this.maxHitPoints = 1500;
+    this.hitPoints = this.maxHitPoints;
     this.bullets = [];
     this.cooldownRemaining = 0;
     this.lives = 3;
