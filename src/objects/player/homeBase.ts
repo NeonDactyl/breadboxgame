@@ -5,12 +5,13 @@ export class homeBase extends Phaser.GameObjects.Sprite {
 
 
   constructor(aParams: IImageConstructor) {
-    super(aParams.scene, aParams.x, aParams.y, 'homebase', aParams.frame);
+    super(aParams.scene, aParams.x, aParams.y, 'bryce', aParams.frame);
 
     this.initSprite();
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(false);
     this.scene.add.existing(this);
+    this.setOrigin(0.75, 0.2)
   }
 
   private initSprite() {

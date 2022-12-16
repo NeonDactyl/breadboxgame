@@ -4,13 +4,13 @@ export class TextButton extends Button {
   private textObject: Phaser.GameObjects.Text;
   private bgImage: Phaser.GameObjects.Image;
   private buttonText: string;
-  private buttonOptions: Phaser.Types.GameObjects.Text.TextStyle;
+  private textOptions: Phaser.Types.GameObjects.Text.TextStyle;
   private textY: number;
 
   constructor(aParams: ITextButtonOptions) {
     super(aParams);
 
-    this.buttonOptions = {
+    this.textOptions = {
         fontFamily: aParams.textFont,
         fontSize: aParams.fontSize,
         color: aParams.textColor
@@ -24,7 +24,7 @@ export class TextButton extends Button {
     this.textObject = this.scene.add.text(0,
       0,
       this.buttonText,
-      this.buttonOptions);
+      this.textOptions);
     this.add([this.bgImage, this.textObject]);
     this.width = this.bgImage.width;
     this.height = this.bgImage.height;
@@ -33,6 +33,9 @@ export class TextButton extends Button {
 
     this.on('pointerover', this.onPointerOver);
     this.on('pointerout', this.onPointerOut);
+    if (this.tooltip) {
+      this.add([this.tooltip]);
+    }
   }
 
   public onPointerOver() {
@@ -47,6 +50,7 @@ export class TextButton extends Button {
   }
 
   public update() {
+    super.update();
     this.bgImage.setTexture(this.isDown ? 'button_text_down' : 'button_text');
     this.textObject.y = this.textY + (this.isDown ? 2 : 0); 
   }

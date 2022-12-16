@@ -1,5 +1,5 @@
 import { IBulletConstructor } from '../interfaces/bullet.interface';
-export class Bullet extends Phaser.GameObjects.Graphics {
+export class Bullet extends Phaser.GameObjects.Sprite {
   declare body : Phaser.Physics.Arcade.Body;
 
   private selectedColor: number;
@@ -13,10 +13,11 @@ export class Bullet extends Phaser.GameObjects.Graphics {
   }
 
   constructor(aParams: IBulletConstructor) {
-    super(aParams.scene, aParams.options);
+    super(aParams.scene, aParams.options.x || 0, aParams.options.y || 0, "bread");
 
     this.selectedColor = this.generateColor();
     this.isOffScreen = false;
+    this.setRotation(aParams.rotation + Math.PI / 2);
 
     this.damage = aParams.damage;
     this.isCritical = aParams.isCritical;
@@ -28,10 +29,9 @@ export class Bullet extends Phaser.GameObjects.Graphics {
       -aParams.speed * Math.sin(aParams.rotation + Math.PI )
     );
 
-    this.fillStyle(this.selectedColor, 1);
-    this.fillCircle(0, 0, aParams.size);
     if (this.isCritical) {
-      this.drawCriticalTriangles(aParams.size + 5);
+     this.setTint(0xFFD700);
+      console.log('critical shot');
     }
 
     this.scene.physics.world.enable(this);
@@ -42,22 +42,6 @@ export class Bullet extends Phaser.GameObjects.Graphics {
     this.scene.add.existing(this);
   }
 
-  drawCriticalTriangles(radius: number) {
-    let x0 = radius;
-    let y0 = 0;
-    let x1 = (radius) * Math.cos(2 * Math.PI / 3);
-    let y1 = (radius) * Math.sin(2 * Math.PI / 3);
-    let x2 = (radius) * Math.cos(4 * Math.PI / 3);
-    let y2 = (radius) * Math.sin(4 * Math.PI / 3);
-    let x3 = x0 * -1;
-    let y3 = y0 * -1;
-    let x4 = x1 * -1;
-    let y4 = y1 * -1;
-    let x5 = x2 * -1;
-    let y5 = y2 * -1;
-    this.fillTriangle(x0, y0, x1, y1, x2, y2);
-    this.fillTriangle(x3, y3, x4, y4, x5, y5);
-  }
 
   update(): void {
     this.x += this.velocity.x;
@@ -65,9 +49,6 @@ export class Bullet extends Phaser.GameObjects.Graphics {
     if (this.isOffScreen) {
       this.setActive(false);
     }
-    // if (this.isCritical) {
-      // this.fillStyle(this.generateColor());
-    // }
     
     this.checkIfOffScreen();
   }
